@@ -17,35 +17,313 @@ Copyright 2014
 
 ```
 .
-├── code
+├── iPythonSysDyn
+│   ├── Bungee.py
+│   ├── FallFriction.ipynb
+│   ├── FallFriction.py
+│   ├── Fall.ipynb
+│   ├── Fall.py
+│   ├── FallSkydive.ipynb
+│   ├── FallSkydive.py
+│   ├── malaria.ipynb
+│   ├── malaria.py
+│   ├── OneCompartAspirin.ipynb
+│   ├── OneCompartAspirin.py
+│   ├── OneCompartDilantin.ipynb
+│   ├── OneCompartDilantin.py
+│   ├── PredatorPrey.ipynb
+│   ├── PredatorPrey.py
+│   ├── __pycache__
+│   │   ├── unconstrained.cpython-38.pyc
+│   │   └── unconstrainedError.cpython-38.pyc
+│   ├── Rocket.ipynb
+│   ├── Rocket.py
+│   ├── SARSRelationships.py
+│   ├── SARSRelationships.txt
+│   ├── sharkCompetition.ipynb
+│   ├── sharkCompetition.py
+│   ├── simplePendulum.ipynb
+│   ├── simplePendulum.py
+│   ├── SIR.ipynb
+│   ├── SIR.py
+│   ├── substrateEnzymeKineticsEquations.txt
+│   ├── substrate.py
+│   ├── unconstrainedError.ipynb
+│   ├── unconstrainedError.py
+│   ├── unconstrained.ipynb
+│   ├── unconstrained.py
+│   ├── Untitled.ipynb
+│   ├── VerticalSpring.ipynb
+│   └── VerticalSpring.py
+├── __MACOSX
 │   ├── iPythonSysDyn
-│   │   └── __pycache__
-│   ├── __MACOSX
-│   │   ├── iPythonSysDyn
-│   │   ├── MATLAB
-│   │   ├── NetLogoSysDyna
-│   │   ├── PythonComp
-│   │   └── R
 │   ├── MATLAB
 │   │   ├── Files
+│   │   │   ├── Age_Structured_MATLAB
+│   │   │   ├── Ants
+│   │   │   ├── Biofilm
+│   │   │   ├── Diffusion
+│   │   │   ├── Fire
+│   │   │   ├── RandomWalk
+│   │   │   └── SocialNetworksMATLAB
 │   │   ├── QRQ
 │   │   └── Tutorials
+│   │       ├── FunctionTutorial
+│   │       ├── MATLABTutorial1
+│   │       ├── MATLABTutorial5
+│   │       └── MATLATTutorial7Alt
 │   ├── NetLogoSysDyna
 │   ├── PythonComp
-│   │   ├── PythonComp Tutorials
+│   │   ├── PythonComp_Tutorials
 │   │   └── PythonCTFiles
 │   └── R
 │       ├── QRQ
-│       ├── R Computational Toolbox Files
-│       ├── R System Dynamics Files
+│       ├── R_Computational_Toolbox_Files
+│       │   ├── Ants_R
+│       │   ├── Biofilm_R
+│       │   ├── RandomWalk_R
+│       │   └── SocialNetworks_R
+│       ├── R_System_Dynamics_Files
 │       └── Tutorials
-├── data
-│   ├── 8_3 Data in 2 Columns
-│   ├── 8_3 Data in various formats
-│   ├── CattleAndDiseaseV2Data
-│   │   └── mu over beta = 0.1
-│   └── __MACOSX
-│       └── Datasets
-└── resources
-    └── CalculusReview
+├── MATLAB
+│   ├── Files
+│   │   ├── Age_Structured_MATLAB
+│   │   │   ├── AgeStructuredExamples.m
+│   │   │   └── AgeStructured.m
+│   │   ├── Ants
+│   │   │   ├── ants.m
+│   │   │   ├── applyDiffusionExtended.m
+│   │   │   ├── applySenseExtended.m
+│   │   │   ├── diffusionPher.m
+│   │   │   ├── initAntGrid.m
+│   │   │   ├── initPherGrid.m
+│   │   │   ├── sense.m
+│   │   │   ├── showAntGraphs.m
+│   │   │   ├── showGraphs.m
+│   │   │   ├── test10_4e2MATLAB.m
+│   │   │   └── walk.m
+│   │   ├── Biofilm
+│   │   │   ├── applyDiffusionExtended.m
+│   │   │   ├── applyDiffusion.m
+│   │   │   ├── biofilm.m
+│   │   │   ├── consumption.m
+│   │   │   ├── diffusion.m
+│   │   │   ├── extendBacteriaGrid.m
+│   │   │   ├── extendNutrientGrid.m
+│   │   │   ├── grow.m
+│   │   │   ├── initBacteriaGrid.m
+│   │   │   ├── initNutrientGrid.m
+│   │   │   ├── pickNeighbor.m
+│   │   │   ├── showBacteriaGraphs.m
+│   │   │   ├── showNutrientGraphs.m
+│   │   │   └── test.m
+│   │   ├── Diffusion
+│   │   │   ├── animDiffusionColor.m
+│   │   │   ├── animDiffusionGray.m
+│   │   │   ├── applyDiffusionExtended.m
+│   │   │   ├── applyHotCold.m
+│   │   │   ├── diffusion.m
+│   │   │   ├── diffusionSim.m
+│   │   │   ├── initBar.m
+│   │   │   ├── reflectingLat.m
+│   │   │   └── testDiffusion.m
+│   │   ├── Distributions.m
+│   │   ├── Empirical_Models.m
+│   │   ├── Fire
+│   │   │   ├── applyExtended.m
+│   │   │   ├── fire.m
+│   │   │   ├── initForest.m
+│   │   │   ├── periodicLat.m
+│   │   │   ├── showGraphs.m
+│   │   │   ├── spread.m
+│   │   │   └── testfire.m
+│   │   ├── PopsAndMatOps.m
+│   │   ├── RandomWalk
+│   │   │   ├── animateWalk.m
+│   │   │   ├── meanRandomWalkDistance.m
+│   │   │   ├── randomWalkDistance.m
+│   │   │   ├── randomWalkPoints.m
+│   │   │   ├── showWalk.m
+│   │   │   └── testRandomWalk.m
+│   │   └── SocialNetworksMATLAB
+│   │       ├── clusteringCoeff.m
+│   │       ├── degPersonPPG.m
+│   │       ├── genPeopleLocConnMat.m
+│   │       ├── index.m
+│   │       ├── minDominating.m
+│   │       ├── numPeopleEdges.m
+│   │       ├── peopleToPeople.m
+│   │       ├── sample_activities.dat
+│   │       └── SocNet.m
+│   ├── QRQ
+│   │   ├── 10_2e2MATLABQRQ.doc
+│   │   ├── 10_3e2MATLABQRQ.doc
+│   │   ├── 10_4e2MATLABQRQ.doc
+│   │   ├── 10_5e2MATLABQRQ.docx
+│   │   ├── 8_3e2MATLABQRQ.doc
+│   │   └── 9_3e2MATLABQRQ.doc
+│   └── Tutorials
+│       ├── FunctionTutorial
+│       │   ├── FunctionTutorial.doc
+│       │   └── FunctionTutorial.m
+│       ├── MATLABTutorial1
+│       │   ├── ~$TLABTutorial1.docx
+│       │   ├── MATLABTutorial1.docx
+│       │   └── MATLABTutorial1.m
+│       ├── MATLABTutorial2.docx
+│       ├── MATLABTutorial3.doc
+│       ├── MATLABTutorial4.doc
+│       ├── MATLABTutorial5
+│       │   ├── circleStats.m
+│       │   ├── MATLABTutorial5.doc
+│       │   └── sqr.m
+│       ├── MATLABTutorial6.doc
+│       ├── MATLABTutorial7.doc
+│       └── MATLATTutorial7Alt
+│           ├── circleStats.m
+│           ├── MATLABTutorial7Alt.doc
+│           ├── sqr.m
+│           └── Tutorial7AltAns.m
+├── MATLABTutorial1.m
+├── NetLogoSysDyna
+│   ├── Bungee.nlogo
+│   ├── Constrained_Growth.nlogo
+│   ├── Drug_Dosage.nlogo
+│   ├── Falling.nlogo
+│   ├── malaria.nlogo
+│   ├── Predator-Prey.nlogo
+│   ├── Rocket.nlogo
+│   ├── SARS.nlogo
+│   ├── sharkCompetition.nlogo
+│   ├── simplePendulum.nlogo
+│   ├── SIR.nlogo
+│   ├── Skydiving.nlogo
+│   ├── substrate.nlogo
+│   ├── Unconstrained_Growth.nlogo
+│   └── VerticalSpring.nlogo
+├── PythonComp
+│   ├── PythonComp_Tutorials
+│   │   ├── plot.py
+│   │   ├── pointPlot.py
+│   │   ├── Python_CT_Tutorial_1.doc
+│   │   ├── Python_CT_Tutorial_2.doc
+│   │   ├── Python_CT_Tutorial_4.doc
+│   │   └── Python_CT_Tutorial_5.doc
+│   └── PythonCTFiles
+│       ├── Fire.py
+│       ├── graphics.py
+│       ├── RandomWalkAvgManyTimes.py
+│       ├── RandomWalkAvg.py
+│       └── RandomWalk.py
+├── R
+│   ├── QRQ
+│   │   ├── 10_2e2R_QRQ.pdf
+│   │   ├── 10_3RQRQ.pdf
+│   │   ├── 10_4e2RQRQ.pdf
+│   │   ├── 10_5e2RQRQ.pdf
+│   │   ├── 8_3e2RQRQ.pdf
+│   │   └── 9_3e2RQRQ.pdf
+│   ├── R_Computational_Toolbox_Files
+│   │   ├── AgeStructured.R
+│   │   ├── Ants_R
+│   │   │   ├── ants.R
+│   │   │   ├── applyDiffusionExtended.R
+│   │   │   ├── applySenseExtended.R
+│   │   │   ├── diffusionPher.R
+│   │   │   ├── initAntGrid.R
+│   │   │   ├── initPherGrid.R
+│   │   │   ├── placeAnts.R
+│   │   │   ├── sense.R
+│   │   │   ├── showGraphs.R
+│   │   │   ├── source.R
+│   │   │   ├── test.R
+│   │   │   └── walk.R
+│   │   ├── Biofilm_R
+│   │   │   ├── applyDiffusionExtended.R
+│   │   │   ├── applyDiffusion.R
+│   │   │   ├── biofilm.R
+│   │   │   ├── consumption.R
+│   │   │   ├── diffusion.R
+│   │   │   ├── extendBacteriaGrid.R
+│   │   │   ├── extendNutrientGrid.R
+│   │   │   ├── grow.R
+│   │   │   ├── initBacteriaGrid.R
+│   │   │   ├── initNutrientGrid.R
+│   │   │   ├── pickNeighbor.R
+│   │   │   ├── showBacteriaGraphs.R
+│   │   │   ├── showNutrientGraphs.R
+│   │   │   ├── source.R
+│   │   │   └── test.R
+│   │   ├── Diffusion_R
+│   │   │   ├── animDiffusionColor.R
+│   │   │   ├── animDiffusionGray.R
+│   │   │   ├── applyDiffusionExtended.R
+│   │   │   ├── applyHotCold.R
+│   │   │   ├── diffusion.R
+│   │   │   ├── diffusionSim.R
+│   │   │   ├── initBar.R
+│   │   │   ├── reflectingLat.R
+│   │   │   ├── source.R
+│   │   │   └── testDiffusion.R
+│   │   ├── Distributions.R
+│   │   ├── EmpiricalModels.R
+│   │   ├── fire_R
+│   │   │   ├── applyExtended.R
+│   │   │   ├── fire.R
+│   │   │   ├── initForest.R
+│   │   │   ├── periodicLat.R
+│   │   │   ├── pointsForGrid.R
+│   │   │   ├── showGraphs.R
+│   │   │   ├── source.R
+│   │   │   ├── spread.R
+│   │   │   └── testFire.R
+│   │   ├── PopsAndMatOps.R
+│   │   ├── RandomWalk_R
+│   │   │   ├── animateWalk.R
+│   │   │   ├── randomWalkPoints.R
+│   │   │   └── test.R
+│   │   └── SocialNetworks_R
+│   │       ├── clusteringCoeff.R
+│   │       ├── degPersonPPG.R
+│   │       ├── genPeopleLocConnMat.R
+│   │       ├── index.R
+│   │       ├── minDominating.R
+│   │       ├── numPeopleEdges.R
+│   │       ├── peopleToPeople.R
+│   │       ├── sample_activities.dat
+│   │       ├── SocNet.R
+│   │       └── source.R
+│   ├── R_System_Dynamics_Files
+│   │   ├── Bungee.R
+│   │   ├── FallFriction.R
+│   │   ├── Fall.R
+│   │   ├── FallSkydive.R
+│   │   ├── Malaria.R
+│   │   ├── OneCompartAspirin.R
+│   │   ├── OneCompartDilantin.R
+│   │   ├── Pendulum.R
+│   │   ├── PredatorPrey.R
+│   │   ├── Rocket.R
+│   │   ├── SARSRelationships.R
+│   │   ├── SharkCompetition.R
+│   │   ├── SIR.R
+│   │   ├── Substrate.R
+│   │   ├── unconstrainedErrorEuler.R
+│   │   ├── unconstrainedErrorRK2.R
+│   │   ├── unconstrainedErrorRK4.R
+│   │   └── VerticalSpring.R
+│   └── Tutorials
+│       ├── RCTTutorial1.pdf
+│       ├── RCTTutorial1.R
+│       ├── RCTTutorial2.pdf
+│       ├── RCTTutorial3.pdf
+│       ├── RCTTutorial4.pdf
+│       ├── RCTTutorial5.pdf
+│       ├── RCTTutorial6.pdf
+│       ├── RCTTutorial7Alt.pdf
+│       ├── RCTTutorial7.pdf
+│       ├── README.txt
+│       ├── RFunctionTutorial.pdf
+│       └── RSDTutorial1.pdf
+└── RCTTutorial1.R
 ```
