@@ -10,35 +10,53 @@ The content is based on the following text:
 Sciences, 2nd Edition* (2014), by Angela B. Shiflet and George W.
 Shiflet, Wofford College Copyright 2014
 
+### code directory Structure (3 levels deep)
+
     .
-    ├── code
+    ├── iPythonSysDyn
+    │   └── __pycache__
+    ├── __MACOSX
     │   ├── iPythonSysDyn
-    │   │   └── __pycache__
-    │   ├── __MACOSX
-    │   │   ├── iPythonSysDyn
-    │   │   ├── MATLAB
-    │   │   ├── NetLogoSysDyna
-    │   │   ├── PythonComp
-    │   │   └── R
     │   ├── MATLAB
     │   │   ├── Files
     │   │   ├── QRQ
     │   │   └── Tutorials
     │   ├── NetLogoSysDyna
     │   ├── PythonComp
-    │   │   ├── PythonComp Tutorials
+    │   │   ├── PythonComp_Tutorials
     │   │   └── PythonCTFiles
     │   └── R
     │       ├── QRQ
-    │       ├── R Computational Toolbox Files
-    │       ├── R System Dynamics Files
+    │       ├── R_Computational_Toolbox_Files
+    │       ├── R_System_Dynamics_Files
     │       └── Tutorials
-    ├── data
-    │   ├── 8_3 Data in 2 Columns
-    │   ├── 8_3 Data in various formats
-    │   ├── CattleAndDiseaseV2Data
-    │   │   └── mu over beta = 0.1
-    │   └── __MACOSX
-    │       └── Datasets
-    └── resources
-        └── CalculusReview
+    ├── MATLAB
+    │   ├── Files
+    │   │   ├── Age_Structured_MATLAB
+    │   │   ├── Ants
+    │   │   ├── Biofilm
+    │   │   ├── Diffusion
+    │   │   ├── Fire
+    │   │   ├── RandomWalk
+    │   │   └── SocialNetworksMATLAB
+    │   ├── QRQ
+    │   └── Tutorials
+    │       ├── FunctionTutorial
+    │       ├── MATLABTutorial1
+    │       ├── MATLABTutorial5
+    │       └── MATLATTutorial7Alt
+    ├── NetLogoSysDyna
+    ├── PythonComp
+    │   ├── PythonComp_Tutorials
+    │   └── PythonCTFiles
+    └── R
+        ├── QRQ
+        ├── R_Computational_Toolbox_Files
+        │   ├── Ants_R
+        │   ├── Biofilm_R
+        │   ├── Diffusion_R
+        │   ├── fire_R
+        │   ├── RandomWalk_R
+        │   └── SocialNetworks_R
+        ├── R_System_Dynamics_Files
+        └── Tutorials
