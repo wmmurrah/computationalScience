@@ -1,0 +1,53 @@
+---
+title: "System Dynamcis"
+author: "William Murrah"
+date: "2/2/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## Module 2.2 Unconstrained Growth and Decay
+
+$$
+\text{average velocity} = \frac{\Delta s}{\Delta t}
+$$
+
+### Quick Review Question 1
+
+a. Average velocity of a ball
+
+```{r}
+s1 = 21.1; s2 = 21.4
+t1 = 1; t2 = 2
+average_velocity = (s2 - s1)/(t2 - t1)
+```
+
+b. 
+```{r}
+s3 = 11.9
+t3 = 3
+average_velocity = (s3 - s1)/(t3 - t1)
+```
+
+
+
+```{r}
+100*exp(.10*(7*24))
+```
+
+```{r}
+log(2)/.10
+```
+
+```{r}
+15000*exp(.02*20)
+```
+
+```{r}
+
+```
+

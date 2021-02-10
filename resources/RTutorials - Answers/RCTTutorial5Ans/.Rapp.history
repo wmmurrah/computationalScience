@@ -1,0 +1,347 @@
+palette(gray(0:8 / 8))
+palette
+palette()
+lst = c(7,8,9)
+lst
+lst(0)
+lst[0]
+lst[1]
+c(2:5)
+runif(1,0,4)
+abs(c[-2, -3, -5])
+abs(c()-2, -3, -5))
+abs(c(-2, -3, -5))
+abs(c(-2, -3, -5+i))
+abs(c(-2, -3, -5 + i))
+abs(c(-2, -3, -5 + imag))
+runif(1, 0, 4)
+find([0,1,0,2]==0)
+find(c(0,1,0,2)==0)
+diag(3)
+6 %% 3
+7 %% 3
+t = seq(-1,40.1);plot(t,-4.9*t^2 + 15*t + 11)
+t = -2:0.1:5;
+t = seq(-2,5,0);plot(t, t^3 - 4*t^2 - t + 4)
+t = seq(0,12,0.1);plot(t, sqrt(t))
+x = seq(0,10,0.1);plot(x, log10(x))
+tbl = rnorm(10000)hist(tbl, breaks=30)
+runif(5)
+max(c(2, -4, 7, 3))
+vec = c([-1, 2, -1, 0, 1, 5, 3, 2, 1)lst = matrix(vec, nrow=3)
+vec = c(-1, 2, -1, 0, 1, 5, 3, 2, 1)lst = matrix(vec, nrow=3)
+lst
+max(lst)
+length(lst)
+length(vec)
+runif()
+runif(1)
+runif(5)
+lst = runif(100)#
+max(lst)#
+min(lst)
+rep(0,5)
+floor(runif(1)) + 1
+floor(runif(1)) + 1
+floor(20*runif(1)) + 1
+floor(20*runif(1)) + 1
+floor(20*runif(1)) + 1
+floor(20*runif(1) + 1)
+floor(20*runif(1) + 1)
+floor(20*runif(1) + 1)
+floor(20*runif(1) + 1)
+floor(20*runif(1) + 1)
+floor(20*runif(1) + 1)
+floor(20*runif(1) + 1)
+floor(20*runif(1) + 1)
+floor(20*runif(1) + 1)
+floor(20*runif(1) + 1)
+floor(20*runif(1) + 1)
+floor(20*runif(1) + 1)
+floor(20*runif(1) + 1)
+floor(20*runif(1) + 1)
+floor(20*runif(1) + 1)
+floor(20*runif(1) + 1)
+floor(20*runif(1) + 1)
+floor(20*runif(1) + 1)
+floor(20*runif(1) + 1)
+floor(20*runif(1) + 1)
+floor(20*runif(1) + 1)
+floor(20*runif(1) + 1)
+floor(20*runif(1) + 1)
+floor(20*runif(1) + 1)
+floor(20*runif(1) + 1)
+floor(20*runif(1) + 1)
+floor(20*runif(1) + 1)
+floor(20*runif(1) + 1)
+z = rep(1, floor(20*runif(1) + 1))#
+length(z)
+z
+z = rep(0, floor(20*runif(1) + 1))#
+length(z)
+z = rep(0, floor(20*runif(1) + 1))#
+length(z)
+z = rep(0, floor(20*runif(1) + 1))#
+length(z)
+z = rep(0, floor(20*runif(1) + 1))#
+length(z)
+x = 0:0.1:2*pi
+x
+x = 0:2*pi
+x = 0:2*pi
+x = 0:2*pi
+x = 0:2*pi:0.1
+seq(0,2*pi)
+x = seq(0, 2*pi, 0.1)
+x
+i=1
+y = 0.5 * i * sin(x)
+plot(x,y,'-')
+plot(x,y,pch='-')
+plot(x,y)
+plot(x,y, type = 'l')
+plot(x, y, type = 'l'",xlim=c(0,2*pi),ylim=c(-5,5))
+)
+plot(x, y, type = 'l', xlim=c(0,2*pi), ylim=c(-5,5))
+x = seq(0, 2*pi, 0.1)for i in 1:10 {   y = 0.5 * i * sin(x)   plot(x, y, type = 'l', xlim=c(0,2*pi), ylim=c(-5,5))}
+x = seq(0, 2*pi, 0.1)for (i in 1:10) {   y = 0.5 * i * sin(x)   plot(x, y, type = 'l', xlim=c(0,2*pi), ylim=c(-5,5))}
+x = seq(0, 2*pi, 0.1)for (i in 1:10) {   y = 0.5 * i * sin(x)   plot(x, y, type = 'l', xlim=c(0,2*pi), ylim=c(-5,5))}
+x = seq(0, 2*pi, 0.1)for (i in 1:10) {   y = 0.5 * i * sin(x)   plot(x, y, type = 'l', xlim=c(0,2*pi), ylim=c(-5,5))   Sys.sleep(1)}
+x = seq(0, 2*pi, 0.1)for (i in 1:10) {   y = 0.5 * i * sin(x)   plot(x, y, type = 'l', xlim=c(0,2*pi), ylim=c(-5,5))   Sys.sleep(0.5)}
+x = seq(0, 2*pi, 0.1)for (i in 1:10) {   y = 0.5 * i * sin(x)   plot(x, y, type = 'l', xlim=c(0,2*pi), ylim=c(-5,5))   Sys.sleep(0.25)}
+xLst = runif(1, 10)yLst = runif (1, 10)plot(xLst, yLst, xlim=c(0,1), ylim=c(0,1))
+xLst = runif(10)yLst = runif (10)plot(xLst, yLst, xlim=c(0,1), ylim=c(0,1))
+xLst(2)
+xLst[2]
+xLst[1:2]
+xLst = runif(10)#
+yLst = runif (10)#
+for (n in 1:10) {#
+	plot(xLst[1:n], yLst[1:n], xlim=c(0,1), ylim=c(0,1))#
+	Sys.sleep(0.25)#
+	}
+f = function(t, i) 	{(1000*20)/((1000 - 20)*exp(-(1+0.2*i)*t) + 20)}t = seq(0,3,0.1)i = 5  # replace with for loopplot(t, f(t, i) , xlim=c(0,3), ylim=c(0,1000))
+f = function(t, i) 	{(1000*20)/((1000 - 20)*exp(-(1+0.2*i)*t) + 20)}t = seq(0,3,0.1)i = 5  # replace with for loopplot(t, f(t, i) , type='l',xlim=c(0,3), ylim=c(0,1000))
+f = function(t, i)	{(1000*20)/((1000 - 20)*exp(-(1+0.2*i)*t) + 20)}#
+t = seq(0,3,0.1)#
+for (n in 1:10) {#
+   plot(t, f(t, i) , type='l', xlim = c(0, 3), ylim = c(0, 1000))#
+	Sys.sleep(0.25)#
+	}
+f = function(t, i)	{(1000*20)/((1000 - 20)*exp(-(1+0.2*i)*t) + 20)}#
+t = seq(0,3,0.1)#
+for (i in 1:10) {#
+   plot(t, f(t, i) , type='l', xlim = c(0, 3), ylim = c(0, 1000))#
+	Sys.sleep(0.25)#
+	}
+f = function(t, i)	{(1000*20)/((1000 - 20)*exp(-(1+0.2*i)*t) + 20)}#
+t = seq(0,3,0.1)#
+for (i in 1:10) {#
+   plot(t, f(t, i) , type='l', xlim = c(0, 3), ylim = c(0, 1000))#
+	Sys.sleep(0.1)#
+	}
+function to return square of a parametersqr = function(x) {x*x}
+rm(list=ls(all=TRUE))
+sqr(4)
+sqr(4)
+source("sqr.R")
+sqr(4)
+rectCircumference(3, 4.2)
+source("rectCircumference.R")#
+rectCircumference(3, 4.2)
+source("rectCircumference.R")#
+rectCircumference(3, 4.2)
+source("randIntRange.R")#
+# c#
+for (i in 1:10) {#
+    randIntRange(5, 9)#
+}
+for (i in 1:10) {#
+    cat(randIntRange(5, 9))#
+}
+for (i in 1:10) {#
+    cat(randIntRange(5, 9), "\n")#
+}
+source("circleStats")
+source("circleStats.R")
+circleStats(5)
+c(ar cir) = circleStats(5)
+(ar cir) = circleStats(5)
+c(ar, cir) = circleStats(5)
+(ar, cir) = circleStats(5)
+ar, cir = circleStats(5)
+stats = circleStats(5)
+ar = stats[1]
+ar
+stats
+source("squareStats.R")#
+# c#
+stats = squareStats(3)#
+# d#
+area = stats[1]#
+circumference = stats[2]
+area
+circumference
+utils::globalVariables("EMPTY")
+utils::globalVariables(c("EMPTY", "TREE"))
+EMPTY = 0
+x = 5
+if (x < -3) || (x > 3) {    cat("Out of bounds\n")}
+if (x < -3) or (x > 3) {    cat("Out of bounds\n")}
+if ((x < -3) or (x > 3)) {    cat("Out of bounds\n")}
+if ((x < -3) || (x > 3)) {    cat("Out of bounds\n")}
+if ((-3 <= x) && (x <= 3)) {    cat("Out of bounds\n")}
+x = 2
+if ((-3 <= x) && (x <= 3)) {    cat("Out of bounds\n")}
+if (-3 ≤ x ≤ 3){    cat("Out of bounds\n")}
+if (~(x > 3)) {}
+if (~(x > 3)) {
+cat("Out of bounds\n")}
+if (!(x > 3)) {    cat("Out of bounds\n")}
+if (x < -3 || x > 3) {    cat("Out of bounds\n")}
+x=5
+if (x < -3 || x > 3) {    cat("Out of bounds\n")}
+x = 5;#
+y = 5;#
+if ()(x + 2 > 3) || (y < x)) {#
+    y = y + 1#
+    }#
+else {#
+    x = x - 1#
+}
+x = 5;#
+y = 5;#
+if ((x + 2 > 3) || (y < x)) {#
+    y = y + 1#
+    }#
+else {#
+    x = x - 1#
+}
+x = 5#
+y = 5#
+if ((x + 2 > 3) || (y < x)) {#
+    y = y + 1#
+    }
+if ((x + 2 > 3) || (y < x)) {#
+    y = y + 1#
+    }#
+else {#
+    x = x - 1#
+}
+if ((x + 2 > 3) || (y < x)) {#
+    y = y + 1#
+    }#
+else {#
+    x = x - 1#
+}
+y = 4
+if ((x + 2 > 3) || (y < x)) {#
+    y = y + 1#
+    }
+y
+if ((x + 2 > 3) || (y < x)) {#
+    y = y + 1#
+    }#
+else {#
+    x = x - 1#
+}
+if ((x + 2 > 3) || (y < x)) {#
+    y = y + 1#
+}#
+else{#
+    x = x - 1#
+}
+if ((x + 2 > 3) || (y < x)) {#
+    y = y + 1#
+}#
+else{#
+	x = x - 1#
+     }
+if ((x + 2 > 3) || (y < x)) {#
+    y = y + 1#
+}#
+else {#
+	x = x - 1#
+     }
+if ((x + 2 > 3) || (y < x)) {#
+    y = y + 1#
+} else {#
+	x = x - 1#
+     }
+x
+y
+x = 5#
+y = 5#
+if ((x + 2 > 3) || (y < x)) {#
+    y = y + 1#
+} else {#
+	x = x - 1#
+     }
+x
+y
+x = c(’a’, ’aa’, ’bc’, ’c’); y = c(’da’, ’a’, ’bc’, ’a’, ’bc’, ’aa’); loc=match(x,y)
+x = c(’a’, ’aa’, ’bc’, ’c’)
+match('aa', x)
+match(3, c(4,3))
+match(3, c(4,13))
+match(3, c(4,,33))
+match(3, c(4,3,3))
+match(3, c(4,13)) > 0
+match(3, c(4,3)) > 0
+v = c(1:6)
+v
+mat = matrix(v,nrows=2)
+mat = matrix(v,nrow=2)
+mat
+match(3,mat)
+match(c(1,3,6),mat)
+match(c(1,13,6),mat)
+t(mat)
+mat = t(mat)
+mat
+3==mat
+c(3,4)==mat
+c(3,5)==mat
+counter = 0ra = runif(1)cat(ra)while (ra < 0.7) {    counter = counter + 1    ra = runif(1)	cat(ra)}counter
+counter = 0ra = runif(1)cat(ra)while (ra < 0.7) {    counter = counter + 1    ra = runif(1)	cat(ra)}counter
+x = 0#
+i = 1#
+while ()(-5 <= x) && (x <= 5)) {#
+	plot(x, 0, , xlim = c(0, 1), ylim =c (0, 1))#
+	Sys.sleep(0.25)#
+    i = i + 1#
+	x = x + randIntRange(-1, 2)#
+}
+x = 0#
+i = 1#
+while ()(-5 <= x) && (x <= 5)) {#
+	plot(x, 0, xlim = c(0, 1), ylim =c (0, 1))#
+	Sys.sleep(0.25)#
+    i = i + 1#
+	x = x + randIntRange(-1, 2)#
+}
+x = 0#
+i = 1#
+while ((-5 <= x) && (x <= 5)) {#
+	plot(x, 0, xlim = c(0, 1), ylim =c (0, 1))#
+	Sys.sleep(0.25)#
+    i = i + 1#
+	x = x + randIntRange(-1, 2)#
+}
+x = 0#
+i = 1#
+while ((-5 <= x) && (x <= 5)) {#
+	plot(x, 0, xlim = c(-5, 5), ylim =c (-1, 1))#
+	Sys.sleep(0.25)#
+    i = i + 1#
+	x = x + randIntRange(-1, 2)#
+}
+x = 0#
+i = 1#
+while ((-5 <= x) && (x <= 5)) {#
+	plot(x, 0, xlim = c(-5, 5), ylim =c (-1, 1))#
+	Sys.sleep(0.25)#
+    i = i + 1#
+	x = x + randIntRange(-1, 2)#
+}#
+x

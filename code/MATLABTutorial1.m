@@ -4,7 +4,7 @@
 % Getting Started
 
 %% Quick Review Question 1	Evaluate 100-factorial.
-
+factorial(100)
 % Additional Features
 
 %% Quick Review Question 2	Have the MATLAB Desktop contain only the
@@ -17,16 +17,18 @@
 %% Quick Review Question 3	
 % a.	Preface this Quick Review Question with a comment that has "QRQ" and 
 % the question number, such as follows:
- 
+% QRQ 3 
 
 %% b.	Press the up arrow to recall the command to evaluate 100!.  Select
 % 100, type 38, and execute the revised command, which evaluates 38!.
+factorial(38)
 
 
 %% c.	Recall the command from Part b, but do not execute it.  With one
 % keystroke, delete the command.  In a comment, indicate the key you
 % pressed to remove the command.
 
+% Esc
 
 % Script M-Files
 
@@ -42,7 +44,7 @@
 %% c.	Execute the file MATLABTutorial1.m.  In a comment, indicate the
 % shortcut to execute the entire file.
 
-
+% Esc
 
 %% d.	Save your new MATLAB to your disk.  Record all your answers to
 % the following Quick Review Questions in MATLABTutorial1.m.  
@@ -54,20 +56,26 @@
 % (not decimal numbers) one-half and three-fourths. MATLAB returns a
 % decimal expansion.
 
+%% QRQ 5
+
+1/2 + 3/4 
 
 %% Quick Review Question 6	log10(x) is the common logarithm of x, or
 % logarithm to the base 10.  Evaluate the common logarithm of 23.4,
 % recording your answer in MATLABTutorial1.m.
 
+log10(23.4)
 
 %% Quick Review Question 7	log(x) is the natural logarithm of x, usually
 % written as ln(x) in mathematical notation.  Evaluate the sine of the
 % natural logarithm of 23.4.
 
+log(23.4)
 
 %% Quick Review Question 8	e^x is exp(x) in MATLAB.  Evaluate the number
 % e^2.
 
+exp(2)
 
 % Variables and Assignments
 
