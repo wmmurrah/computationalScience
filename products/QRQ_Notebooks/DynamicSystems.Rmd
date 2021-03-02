@@ -9,12 +9,20 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-
 ## Module 2.2 Unconstrained Growth and Decay
+
+
+### Rate of Change
 
 $$
 \text{average velocity} = \frac{\Delta s}{\Delta t}
 $$
+
+$$
+y = s(t)
+$$
+
+
 
 ### Quick Review Question 1
 

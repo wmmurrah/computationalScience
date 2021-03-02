@@ -17,10 +17,10 @@ end
 GRAPHICS-WINDOW
 238
 107
-483
-300
-1
-1
+408
+278
+-1
+-1
 54.0
 1
 10
@@ -99,7 +99,7 @@ INPUTBOX
 270
 70
 initialPopulation
-100
+100.0
 1
 0
 Number
@@ -121,7 +121,7 @@ INPUTBOX
 409
 70
 timeStop
-200
+400.0
 1
 0
 Number
@@ -132,7 +132,7 @@ INPUTBOX
 512
 70
 carryingCapacity
-3000
+3000.0
 1
 0
 Number
@@ -484,43 +484,41 @@ false
 0
 Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
-
 @#$#@#$#@
-NetLogo 5.0.1
+NetLogo 6.2.0
 @#$#@#$#@
 @#$#@#$#@
-1.0 
-    org.nlogo.sdm.gui.AggregateDrawing 6 
-        org.nlogo.sdm.gui.StockFigure "attributes" "attributes" 1 "FillColor" "Color" 225 225 182 522 225 60 40 
-            org.nlogo.sdm.gui.WrappedStock "population" "initialPopulation" 1   
-        org.nlogo.sdm.gui.ReservoirFigure "attributes" "attributes" 1 "FillColor" "Color" 192 192 192 350 230 30 30  
-        org.nlogo.sdm.gui.RateConnection 3 380 245 445 245 510 245 NULL NULL 0 0 0 
-            org.jhotdraw.figures.ChopEllipseConnector REF 3  
-            org.jhotdraw.standard.ChopBoxConnector REF 1  
-            org.nlogo.sdm.gui.WrappedRate "growth_rate * (1 - population / carryingCapacity) * population" "growth" 
-                org.nlogo.sdm.gui.WrappedReservoir  REF 2 0   
-        org.nlogo.sdm.gui.ConverterFigure "attributes" "attributes" 1 "FillColor" "Color" 130 188 183 312 131 50 50 
-            org.nlogo.sdm.gui.WrappedConverter "growthRate" "growth_rate"   
-        org.nlogo.sdm.gui.BindingConnection 2 350 167 445 245 NULL NULL 0 0 0 
-            org.jhotdraw.contrib.ChopDiamondConnector REF 9  
-            org.nlogo.sdm.gui.ChopRateConnector REF 4   
-        org.nlogo.sdm.gui.BindingConnection 2 510 245 445 245 NULL NULL 0 0 0 
-            org.jhotdraw.standard.ChopBoxConnector REF 1  
+1.0
+    org.nlogo.sdm.gui.AggregateDrawing 6
+        org.nlogo.sdm.gui.StockFigure "attributes" "attributes" 1 "FillColor" "Color" 225 225 182 522 225 60 40
+            org.nlogo.sdm.gui.WrappedStock "population" "initialPopulation" 1
+        org.nlogo.sdm.gui.ReservoirFigure "attributes" "attributes" 1 "FillColor" "Color" 192 192 192 350 230 30 30
+        org.nlogo.sdm.gui.RateConnection 3 380 245 445 245 510 245 NULL NULL 0 0 0
+            org.jhotdraw.figures.ChopEllipseConnector REF 3
+            org.jhotdraw.standard.ChopBoxConnector REF 1
+            org.nlogo.sdm.gui.WrappedRate "growth_rate * (1 - population / carryingCapacity) * population" "growth"
+                org.nlogo.sdm.gui.WrappedReservoir  REF 2 0
+        org.nlogo.sdm.gui.ConverterFigure "attributes" "attributes" 1 "FillColor" "Color" 130 188 183 312 131 50 50
+            org.nlogo.sdm.gui.WrappedConverter "growthRate" "growth_rate"
+        org.nlogo.sdm.gui.BindingConnection 2 350 167 445 245 NULL NULL 0 0 0
+            org.jhotdraw.contrib.ChopDiamondConnector REF 9
+            org.nlogo.sdm.gui.ChopRateConnector REF 4
+        org.nlogo.sdm.gui.BindingConnection 2 510 245 445 245 NULL NULL 0 0 0
+            org.jhotdraw.standard.ChopBoxConnector REF 1
             org.nlogo.sdm.gui.ChopRateConnector REF 4
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
 default
 0.0
--0.2 0 1.0 0.0
+-0.2 0 0.0 1.0
 0.0 1 1.0 0.0
-0.2 0 1.0 0.0
+0.2 0 0.0 1.0
 link direction
 true
 0
 Line -7500403 true 150 150 90 180
 Line -7500403 true 150 150 210 180
-
 @#$#@#$#@
 0
 @#$#@#$#@
