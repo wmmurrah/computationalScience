@@ -1,40 +1,64 @@
-; NetLogo code by Mayfield Reynolds    07/13/2012
-; Based on Constrained Growth module by the Drs. Shiflet
+; Random walk simulation with from 1 to number-of-walkers walkers, 
+; with plot of the average distance walked from the starting point
 
+turtles-own [x0 y0 turtle-distance]
+
+; setup patches, walkers, and clock
 to setup
-  ca
-  system-dynamics-setup
-  set-plot-x-range 0 timeStop
-  set-plot-y-range 0 round carryingCapacity
+  clear-all
+  ask patches [set pcolor white]
+  setup-walkers
+  reset-ticks
 end
 
+; set up number-of-walkers at random locations near the origin and
+; save each walker's starting location in x0, y0
+to setup-walkers
+  create-turtles number-of-walkers
+  [
+    set color random 100
+    set xcor random 10
+    set x0 xcor
+    set ycor random 10 
+    set y0 ycor
+    pd
+  ]
+end
+
+; at each iteration, have each turtle move to a neighbor and 
+; save its distance from its starting location in turtle-distance 
 to go
-  if (ticks >= timeStop) [stop]
-  system-dynamics-go
-  system-dynamics-do-plot
+  ask turtles 
+  [ 
+    move-to one-of neighbors 
+    set turtle-distance distancexy x0 y0
+;;    if (xcor = max-pxcor) or (xcor = min-pxcor) or (ycor = max-pxcor ) or (ycor = min-pxcor) [die]
+    ]
+;;  if (count turtles) < number-of-walkers [stop]
+  tick
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
-238
-107
-408
-278
--1
--1
-54.0
+207
+11
+865
+530
+40
+30
+8.0
 1
 10
 1
 1
 1
 0
+0
+0
 1
-1
-1
--1
-1
--1
-1
+-40
+40
+-30
+30
 0
 0
 1
@@ -42,111 +66,72 @@ ticks
 30.0
 
 BUTTON
-101
-25
-164
-58
-Go
-go
-T
-1
-T
-OBSERVER
+6
+32
+72
+65
 NIL
-G
-NIL
-NIL
-1
-
-BUTTON
-25
-25
-89
-58
-Setup
 setup
 NIL
 1
 T
 OBSERVER
 NIL
-S
+NIL
 NIL
 NIL
 1
+
+SLIDER
+13
+101
+187
+134
+number-of-walkers
+number-of-walkers
+1
+1000
+1000
+1
+1
+NIL
+HORIZONTAL
+
+BUTTON
+104
+35
+167
+68
+NIL
+go
+T
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+0
 
 PLOT
-25
-78
-597
-359
-Constrained Growth
+879
+17
+1347
+329
+plot 1
 Time
-Population
+Mean Distance & Square Root # Steps
 0.0
 10.0
 0.0
 10.0
-false
-false
+true
+true
 "" ""
 PENS
-"population" 1.0 0 -16777216 true "" ""
-
-INPUTBOX
-176
-10
-270
-70
-initialPopulation
-100.0
-1
-0
-Number
-
-INPUTBOX
-278
-10
-344
-70
-growthRate
-0.05
-1
-0
-Number
-
-INPUTBOX
-354
-10
-409
-70
-timeStop
-400.0
-1
-0
-Number
-
-INPUTBOX
-420
-10
-512
-70
-carryingCapacity
-3000.0
-1
-0
-Number
-
-MONITOR
-526
-18
-597
-63
-Population
-population
-0
-1
-11
+"Mean distance" 1.0 0 -16777216 true "" "plot mean [turtle-distance] of turtles"
+"Square root steps" 1.0 0 -7500403 true "" "plot 1.1 * sqrt ticks"
 
 @#$#@#$#@
 ## WHAT IS IT?
@@ -379,12 +364,19 @@ Polygon -7500403 true true 135 90 120 45 150 15 180 45 165 90
 
 sheep
 false
-0
-Rectangle -7500403 true true 151 225 180 285
-Rectangle -7500403 true true 47 225 75 285
-Rectangle -7500403 true true 15 75 210 225
-Circle -7500403 true true 135 75 150
-Circle -16777216 true false 165 76 116
+15
+Circle -1 true true 203 65 88
+Circle -1 true true 70 65 162
+Circle -1 true true 150 105 120
+Polygon -7500403 true false 218 120 240 165 255 165 278 120
+Circle -7500403 true false 214 72 67
+Rectangle -1 true true 164 223 179 298
+Polygon -1 true true 45 285 30 285 30 240 15 195 45 210
+Circle -1 true true 3 83 150
+Rectangle -1 true true 65 221 80 296
+Polygon -1 true true 195 285 210 285 210 240 240 210 195 210
+Polygon -7500403 true false 276 85 285 105 302 99 294 83
+Polygon -7500403 true false 219 85 210 105 193 99 201 83
 
 square
 false
@@ -473,39 +465,20 @@ Line -7500403 true 84 40 221 269
 wolf
 false
 0
-Polygon -7500403 true true 135 285 195 285 270 90 30 90 105 285
-Polygon -7500403 true true 270 90 225 15 180 90
-Polygon -7500403 true true 30 90 75 15 120 90
-Circle -1 true false 183 138 24
-Circle -1 true false 93 138 24
+Polygon -16777216 true false 253 133 245 131 245 133
+Polygon -7500403 true true 2 194 13 197 30 191 38 193 38 205 20 226 20 257 27 265 38 266 40 260 31 253 31 230 60 206 68 198 75 209 66 228 65 243 82 261 84 268 100 267 103 261 77 239 79 231 100 207 98 196 119 201 143 202 160 195 166 210 172 213 173 238 167 251 160 248 154 265 169 264 178 247 186 240 198 260 200 271 217 271 219 262 207 258 195 230 192 198 210 184 227 164 242 144 259 145 284 151 277 141 293 140 299 134 297 127 273 119 270 105
+Polygon -7500403 true true -1 195 14 180 36 166 40 153 53 140 82 131 134 133 159 126 188 115 227 108 236 102 238 98 268 86 269 92 281 87 269 103 269 113
 
 x
 false
 0
 Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
+
 @#$#@#$#@
-NetLogo 6.2.0
+NetLogo 5.0.5
 @#$#@#$#@
 @#$#@#$#@
-1.0
-    org.nlogo.sdm.gui.AggregateDrawing 6
-        org.nlogo.sdm.gui.StockFigure "attributes" "attributes" 1 "FillColor" "Color" 225 225 182 522 225 60 40
-            org.nlogo.sdm.gui.WrappedStock "population" "initialPopulation" 1
-        org.nlogo.sdm.gui.ReservoirFigure "attributes" "attributes" 1 "FillColor" "Color" 192 192 192 350 230 30 30
-        org.nlogo.sdm.gui.RateConnection 3 380 245 445 245 510 245 NULL NULL 0 0 0
-            org.jhotdraw.figures.ChopEllipseConnector REF 3
-            org.jhotdraw.standard.ChopBoxConnector REF 1
-            org.nlogo.sdm.gui.WrappedRate "growth_rate * (1 - population / carryingCapacity) * population" "growth"
-                org.nlogo.sdm.gui.WrappedReservoir  REF 2 0
-        org.nlogo.sdm.gui.ConverterFigure "attributes" "attributes" 1 "FillColor" "Color" 130 188 183 312 131 50 50
-            org.nlogo.sdm.gui.WrappedConverter "growthRate" "growth_rate"
-        org.nlogo.sdm.gui.BindingConnection 2 350 167 445 245 NULL NULL 0 0 0
-            org.jhotdraw.contrib.ChopDiamondConnector REF 9
-            org.nlogo.sdm.gui.ChopRateConnector REF 4
-        org.nlogo.sdm.gui.BindingConnection 2 510 245 445 245 NULL NULL 0 0 0
-            org.jhotdraw.standard.ChopBoxConnector REF 1
-            org.nlogo.sdm.gui.ChopRateConnector REF 4
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
@@ -519,6 +492,7 @@ true
 0
 Line -7500403 true 150 150 90 180
 Line -7500403 true 150 150 210 180
+
 @#$#@#$#@
 0
 @#$#@#$#@
