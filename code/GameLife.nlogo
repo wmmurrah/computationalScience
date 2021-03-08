@@ -1,11 +1,14 @@
+
 patches-own [live-neighbors]
+
 
 to setup
   clear-all
+  random-seed set-seed
   ask patches [
     ;; create approximately 10% alive patches
     set pcolor blue - 3 ;; dark blue cells are dead
-    if random 100 < 05 [
+    if random 100 < initial-percent-alive [
       set pcolor green ;; green cells are alive
     ]
   ]
@@ -108,6 +111,28 @@ NIL
 NIL
 NIL
 1
+
+INPUTBOX
+38
+247
+199
+307
+set-seed
+3.0
+1
+0
+Number
+
+INPUTBOX
+33
+340
+194
+400
+initial-percent-alive
+5.0
+1
+0
+Number
 
 @#$#@#$#@
 ## WHAT IS IT?
