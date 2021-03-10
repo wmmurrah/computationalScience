@@ -1,5 +1,6 @@
 README File for R System Dynamics Files to Accompany
-Introduction to Computational Science: Modeling and Simulation for the Sciences, 2nd Editionby Angela B. Shiflet and George W. Shiflet, Wofford College 
+Introduction to Computational Science: Modeling and Simulation for the Sciences, 2nd Edition
+by Angela B. Shiflet and George W. Shiflet, Wofford College 
 Copyright 2014
 
 Original R materials by Stephen Davies, University of Mary Washington 
