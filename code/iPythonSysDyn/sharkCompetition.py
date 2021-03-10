@@ -37,3 +37,4 @@ def sharkCompetition(DT = 0.001, simLength = 5):
         BTSLst.append(BTS_population)
 
     return tLst, WTSLst, BTSLst
+

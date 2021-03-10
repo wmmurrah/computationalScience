@@ -15,10 +15,10 @@ end
 GRAPHICS-WINDOW
 162
 214
-407
-407
-16
-16
+332
+385
+-1
+-1
 4.91
 1
 10
@@ -79,7 +79,7 @@ INPUTBOX
 142
 78
 initialWTSPopulation
-20
+20.0
 1
 0
 Number
@@ -90,7 +90,7 @@ INPUTBOX
 535
 78
 initialBTSPopulation
-15
+15.0
 1
 0
 Number
@@ -104,7 +104,7 @@ WTSBirthFraction
 WTSBirthFraction
 0
 1
-1
+1.0
 .01
 1
 NIL
@@ -119,7 +119,7 @@ WTSDeathProportionalityConstant
 WTSDeathProportionalityConstant
 0
 1
-0.25
+0.27
 .01
 1
 NIL
@@ -134,7 +134,7 @@ BTSBirthFraction
 BTSBirthFraction
 0
 1
-1
+1.0
 .01
 1
 NIL
@@ -149,7 +149,7 @@ BTSDeathProportionalityConstant
 BTSDeathProportionalityConstant
 0
 1
-0.19
+0.2
 .01
 1
 NIL
@@ -171,7 +171,7 @@ true
 true
 "" ""
 PENS
-"WTSPopulation" 1.0 0 -13345367 true "" ""
+"WTSPopulation" 1.0 0 -2674135 true "" ""
 "BTSPopulation" 1.0 0 -16777216 true "" ""
 
 MONITOR
@@ -532,93 +532,91 @@ false
 0
 Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
-
 @#$#@#$#@
-NetLogo 5.0.1
+NetLogo 6.2.0
 @#$#@#$#@
 @#$#@#$#@
-0.01 
-    org.nlogo.sdm.gui.AggregateDrawing 24 
-        org.nlogo.sdm.gui.StockFigure "attributes" "attributes" 1 "FillColor" "Color" 225 225 182 268 110 60 40 
-            org.nlogo.sdm.gui.WrappedStock "WTSPopulation" "initialWTSPopulation" 1   
-        org.nlogo.sdm.gui.RateConnection 3 340 134 426 145 513 155 NULL NULL 0 0 0 
-            org.jhotdraw.standard.ChopBoxConnector REF 1  
-            org.jhotdraw.figures.ChopEllipseConnector 
-                org.nlogo.sdm.gui.ReservoirFigure "attributes" "attributes" 1 "FillColor" "Color" 192 192 192 512 140 30 30   
-            org.nlogo.sdm.gui.WrappedRate "WTS_Death_Prop_Fraction * BTSPopulation * WTSPopulation" "WTSDeaths" REF 2 
-                org.nlogo.sdm.gui.WrappedReservoir  0   REF 6 
-        org.nlogo.sdm.gui.ReservoirFigure "attributes" "attributes" 1 "FillColor" "Color" 192 192 192 62 140 30 30  
-        org.nlogo.sdm.gui.RateConnection 3 92 154 174 145 256 135 NULL NULL 0 0 0 
-            org.jhotdraw.figures.ChopEllipseConnector REF 9  
-            org.jhotdraw.standard.ChopBoxConnector REF 1  
-            org.nlogo.sdm.gui.WrappedRate "WTSPopulation * WTS_Birth_Fraction" "WTSBirths" 
-                org.nlogo.sdm.gui.WrappedReservoir  REF 2 0   
-        org.nlogo.sdm.gui.BindingConnection 2 256 134 174 145 NULL NULL 0 0 0 
-            org.jhotdraw.standard.ChopBoxConnector REF 1  
-            org.nlogo.sdm.gui.ChopRateConnector REF 10   
-        org.nlogo.sdm.gui.BindingConnection 2 340 134 426 145 NULL NULL 0 0 0 
-            org.jhotdraw.standard.ChopBoxConnector REF 1  
-            org.nlogo.sdm.gui.ChopRateConnector REF 3   
-        org.nlogo.sdm.gui.StockFigure "attributes" "attributes" 1 "FillColor" "Color" 225 225 182 268 328 60 40 
-            org.nlogo.sdm.gui.WrappedStock "BTSPopulation" "initialBTSPopulation" 1   
-        org.nlogo.sdm.gui.RateConnection 3 340 353 424 363 509 373 NULL NULL 0 0 0 
-            org.jhotdraw.standard.ChopBoxConnector REF 21  
-            org.jhotdraw.figures.ChopEllipseConnector 
-                org.nlogo.sdm.gui.ReservoirFigure "attributes" "attributes" 1 "FillColor" "Color" 192 192 192 508 359 30 30   
-            org.nlogo.sdm.gui.WrappedRate "BTS_Death_Prop_Fraction * WTSPopulation * BTSPopulation" "BTSDeaths" REF 22 
-                org.nlogo.sdm.gui.WrappedReservoir  0   REF 26 
-        org.nlogo.sdm.gui.ReservoirFigure "attributes" "attributes" 1 "FillColor" "Color" 192 192 192 56 360 30 30  
-        org.nlogo.sdm.gui.RateConnection 3 86 374 171 364 256 353 NULL NULL 0 0 0 
-            org.jhotdraw.figures.ChopEllipseConnector REF 29  
-            org.jhotdraw.standard.ChopBoxConnector REF 21  
-            org.nlogo.sdm.gui.WrappedRate "BTSPopulation * BTS_Birth_Fraction" "BTSBirths" 
-                org.nlogo.sdm.gui.WrappedReservoir  REF 22 0   
-        org.nlogo.sdm.gui.ConverterFigure "attributes" "attributes" 1 "FillColor" "Color" 130 188 183 90 460 50 50 
-            org.nlogo.sdm.gui.WrappedConverter "BTSBirthFraction" "BTS_Birth_Fraction"   
-        org.nlogo.sdm.gui.ConverterFigure "attributes" "attributes" 1 "FillColor" "Color" 130 188 183 456 467 50 50 
-            org.nlogo.sdm.gui.WrappedConverter "BTSDeathProportionalityConstant" "BTS_Death_Prop_Fraction"   
-        org.nlogo.sdm.gui.ConverterFigure "attributes" "attributes" 1 "FillColor" "Color" 130 188 183 457 236 50 50 
-            org.nlogo.sdm.gui.WrappedConverter "WTSDeathProportionalityConstant" "WTS_Death_Prop_Fraction"   
-        org.nlogo.sdm.gui.ConverterFigure "attributes" "attributes" 1 "FillColor" "Color" 130 188 183 94 231 50 50 
-            org.nlogo.sdm.gui.WrappedConverter "WTSBirthFraction" "WTS_Birth_Fraction"   
-        org.nlogo.sdm.gui.BindingConnection 2 127 239 174 145 NULL NULL 0 0 0 
-            org.jhotdraw.contrib.ChopDiamondConnector REF 41  
-            org.nlogo.sdm.gui.ChopRateConnector REF 10   
-        org.nlogo.sdm.gui.BindingConnection 2 473 244 426 145 NULL NULL 0 0 0 
-            org.jhotdraw.contrib.ChopDiamondConnector REF 39  
-            org.nlogo.sdm.gui.ChopRateConnector REF 3   
-        org.nlogo.sdm.gui.BindingConnection 2 318 316 426 145 NULL NULL 0 0 0 
-            org.jhotdraw.standard.ChopBoxConnector REF 21  
-            org.nlogo.sdm.gui.ChopRateConnector REF 3   
-        org.nlogo.sdm.gui.BindingConnection 2 340 353 424 363 NULL NULL 0 0 0 
-            org.jhotdraw.standard.ChopBoxConnector REF 21  
-            org.nlogo.sdm.gui.ChopRateConnector REF 23   
-        org.nlogo.sdm.gui.BindingConnection 2 256 352 171 364 NULL NULL 0 0 0 
-            org.jhotdraw.standard.ChopBoxConnector REF 21  
-            org.nlogo.sdm.gui.ChopRateConnector REF 30   
-        org.nlogo.sdm.gui.BindingConnection 2 122 467 171 364 NULL NULL 0 0 0 
-            org.jhotdraw.contrib.ChopDiamondConnector REF 35  
-            org.nlogo.sdm.gui.ChopRateConnector REF 30   
-        org.nlogo.sdm.gui.BindingConnection 2 473 474 424 363 NULL NULL 0 0 0 
-            org.jhotdraw.contrib.ChopDiamondConnector REF 37  
-            org.nlogo.sdm.gui.ChopRateConnector REF 23   
-        org.nlogo.sdm.gui.BindingConnection 2 315 162 424 363 NULL NULL 0 0 0 
-            org.jhotdraw.standard.ChopBoxConnector REF 1  
+0.01
+    org.nlogo.sdm.gui.AggregateDrawing 24
+        org.nlogo.sdm.gui.StockFigure "attributes" "attributes" 1 "FillColor" "Color" 225 225 182 268 110 60 40
+            org.nlogo.sdm.gui.WrappedStock "WTSPopulation" "initialWTSPopulation" 1
+        org.nlogo.sdm.gui.RateConnection 3 340 134 426 144 513 154 NULL NULL 0 0 0
+            org.jhotdraw.standard.ChopBoxConnector REF 1
+            org.jhotdraw.figures.ChopEllipseConnector
+                org.nlogo.sdm.gui.ReservoirFigure "attributes" "attributes" 1 "FillColor" "Color" 192 192 192 512 140 30 30
+            org.nlogo.sdm.gui.WrappedRate "WTS_Death_Prop_Fraction * BTSPopulation * WTSPopulation" "WTSDeaths" REF 2
+                org.nlogo.sdm.gui.WrappedReservoir  0   REF 6
+        org.nlogo.sdm.gui.ReservoirFigure "attributes" "attributes" 1 "FillColor" "Color" 192 192 192 62 140 30 30
+        org.nlogo.sdm.gui.RateConnection 3 92 154 174 144 256 134 NULL NULL 0 0 0
+            org.jhotdraw.figures.ChopEllipseConnector REF 9
+            org.jhotdraw.standard.ChopBoxConnector REF 1
+            org.nlogo.sdm.gui.WrappedRate "WTSPopulation * WTS_Birth_Fraction" "WTSBirths"
+                org.nlogo.sdm.gui.WrappedReservoir  REF 2 0
+        org.nlogo.sdm.gui.BindingConnection 2 256 134 174 144 NULL NULL 0 0 0
+            org.jhotdraw.standard.ChopBoxConnector REF 1
+            org.nlogo.sdm.gui.ChopRateConnector REF 10
+        org.nlogo.sdm.gui.BindingConnection 2 340 134 426 144 NULL NULL 0 0 0
+            org.jhotdraw.standard.ChopBoxConnector REF 1
+            org.nlogo.sdm.gui.ChopRateConnector REF 3
+        org.nlogo.sdm.gui.StockFigure "attributes" "attributes" 1 "FillColor" "Color" 225 225 182 268 328 60 40
+            org.nlogo.sdm.gui.WrappedStock "BTSPopulation" "initialBTSPopulation" 1
+        org.nlogo.sdm.gui.RateConnection 3 340 353 424 363 509 373 NULL NULL 0 0 0
+            org.jhotdraw.standard.ChopBoxConnector REF 21
+            org.jhotdraw.figures.ChopEllipseConnector
+                org.nlogo.sdm.gui.ReservoirFigure "attributes" "attributes" 1 "FillColor" "Color" 192 192 192 508 359 30 30
+            org.nlogo.sdm.gui.WrappedRate "BTS_Death_Prop_Fraction * WTSPopulation * BTSPopulation" "BTSDeaths" REF 22
+                org.nlogo.sdm.gui.WrappedReservoir  0   REF 26
+        org.nlogo.sdm.gui.ReservoirFigure "attributes" "attributes" 1 "FillColor" "Color" 192 192 192 56 360 30 30
+        org.nlogo.sdm.gui.RateConnection 3 86 374 171 363 256 352 NULL NULL 0 0 0
+            org.jhotdraw.figures.ChopEllipseConnector REF 29
+            org.jhotdraw.standard.ChopBoxConnector REF 21
+            org.nlogo.sdm.gui.WrappedRate "BTSPopulation * BTS_Birth_Fraction" "BTSBirths"
+                org.nlogo.sdm.gui.WrappedReservoir  REF 22 0
+        org.nlogo.sdm.gui.ConverterFigure "attributes" "attributes" 1 "FillColor" "Color" 130 188 183 90 460 50 50
+            org.nlogo.sdm.gui.WrappedConverter "BTSBirthFraction" "BTS_Birth_Fraction"
+        org.nlogo.sdm.gui.ConverterFigure "attributes" "attributes" 1 "FillColor" "Color" 130 188 183 456 467 50 50
+            org.nlogo.sdm.gui.WrappedConverter "BTSDeathProportionalityConstant" "BTS_Death_Prop_Fraction"
+        org.nlogo.sdm.gui.ConverterFigure "attributes" "attributes" 1 "FillColor" "Color" 130 188 183 457 236 50 50
+            org.nlogo.sdm.gui.WrappedConverter "WTSDeathProportionalityConstant" "WTS_Death_Prop_Fraction"
+        org.nlogo.sdm.gui.ConverterFigure "attributes" "attributes" 1 "FillColor" "Color" 130 188 183 94 231 50 50
+            org.nlogo.sdm.gui.WrappedConverter "WTSBirthFraction" "WTS_Birth_Fraction"
+        org.nlogo.sdm.gui.BindingConnection 2 127 239 174 144 NULL NULL 0 0 0
+            org.jhotdraw.contrib.ChopDiamondConnector REF 41
+            org.nlogo.sdm.gui.ChopRateConnector REF 10
+        org.nlogo.sdm.gui.BindingConnection 2 473 244 426 144 NULL NULL 0 0 0
+            org.jhotdraw.contrib.ChopDiamondConnector REF 39
+            org.nlogo.sdm.gui.ChopRateConnector REF 3
+        org.nlogo.sdm.gui.BindingConnection 2 318 316 426 144 NULL NULL 0 0 0
+            org.jhotdraw.standard.ChopBoxConnector REF 21
+            org.nlogo.sdm.gui.ChopRateConnector REF 3
+        org.nlogo.sdm.gui.BindingConnection 2 340 353 424 363 NULL NULL 0 0 0
+            org.jhotdraw.standard.ChopBoxConnector REF 21
+            org.nlogo.sdm.gui.ChopRateConnector REF 23
+        org.nlogo.sdm.gui.BindingConnection 2 256 352 171 363 NULL NULL 0 0 0
+            org.jhotdraw.standard.ChopBoxConnector REF 21
+            org.nlogo.sdm.gui.ChopRateConnector REF 30
+        org.nlogo.sdm.gui.BindingConnection 2 122 467 171 363 NULL NULL 0 0 0
+            org.jhotdraw.contrib.ChopDiamondConnector REF 35
+            org.nlogo.sdm.gui.ChopRateConnector REF 30
+        org.nlogo.sdm.gui.BindingConnection 2 473 474 424 363 NULL NULL 0 0 0
+            org.jhotdraw.contrib.ChopDiamondConnector REF 37
+            org.nlogo.sdm.gui.ChopRateConnector REF 23
+        org.nlogo.sdm.gui.BindingConnection 2 315 162 424 363 NULL NULL 0 0 0
+            org.jhotdraw.standard.ChopBoxConnector REF 1
             org.nlogo.sdm.gui.ChopRateConnector REF 23
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
 default
 0.0
--0.2 0 1.0 0.0
+-0.2 0 0.0 1.0
 0.0 1 1.0 0.0
-0.2 0 1.0 0.0
+0.2 0 0.0 1.0
 link direction
 true
 0
 Line -7500403 true 150 150 90 180
 Line -7500403 true 150 150 210 180
-
 @#$#@#$#@
 0
 @#$#@#$#@
