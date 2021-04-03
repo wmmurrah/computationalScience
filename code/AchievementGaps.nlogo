@@ -1,25 +1,172 @@
-; NetLogo code by Mayfield Reynolds    07/24/2012
-; Based on Competition module by Drs. Shiflet
+;Montes, G. (2011). Using artificial societies to understand the impact of teacher student match on
+;; academic performance: the case of same race effects
+
+globals [nstudents matcheffect cuttoff differential counter]
+breed [teachers teacher]
+breed [students student]
+teachers-own [race distr]
+students-own [race distr achiev match rachiev nmatches]
+
 
 to setup
-  ca
-  system-dynamics-setup
+ clear-all
+ ask patches [set pcolor white]
+ set counter 0
+
+
+
+ ; Blue is Black or minority group and yellow is White or majority group.
+ ; I use the normal distribution to set the groups to calibrated percentages.
+
+ set nstudents pupilsperclass * nteachers
+ create-ordered-students nstudents [set shape "person"
+                                    set color red
+                                    fd 16
+                                    set distr random-normal 0 1
+                                    set achiev 0
+                                    set rachiev 0
+                                    set nmatches 0
+                                    set match 0
+                                    ifelse distr <= -1.02365  [set race -1 set color blue][set race 1 set color yellow]]
+ create-ordered-teachers nteachers [set shape "house"
+                                    set color blue
+                                    fd 10
+                                    set distr random-normal 0 1
+                                    ifelse distr <= -1.46471  [set race -1 set color blue][set race 1 set color yellow]]
+ student-assignment
+ ask links  [ifelse [race] of end1 * [race] of end2 > 0
+                               [set color green
+                                set thickness 0.2
+                                ask end1 [set match 1
+                                          ;set nmatches nmatches + 1
+                                          ]]
+                               [set color red
+                                ask end1[set match 0] ]]
+ setup-graph
+end
+
+to student-assignment
+  let i nstudents
+  let j 0
+  let h 1
+  while [ i < nstudents + nteachers]
+     [ ask teacher i [create-link-with student j]
+       ifelse h < pupilsperclass [set h h + 1][set i i + 1 set h 1]
+       set j j + 1
+       ]
 end
 
 to go
-  system-dynamics-go
-  system-dynamics-do-plot
-  if WTSPopulation < .5 or BTSPopulation < .5 [ stop ]
+   ifelse counter > 12 [stop][
+   graph
+   academicprod  ;; procedure to increase academic production
+   normalize
+   gradechange   ;; procedure to change grade and get a new teacher
+  ]
+end
+
+;; penalty simply substracts a percentage of the teacher effect
+to academicprod
+  ask students [set achiev achiev + teffect + match * tmatch + random-normal 0 error
+                set nmatches (nmatches + 1 * match)]
+  set counter counter + 1
+end
+
+to gradechange
+ ask teachers [set distr random-normal 0 1]
+ teacher-race
+ det-match
+end
+
+to teacher-race
+  ask teachers [ifelse distr <= -1.46471 [set race -1 set color blue][set race 1 set color yellow]]
+end
+
+;;end 1 is student
+;; end 2 is teacher
+;; if condition uses the fact that if races match product is positive and if they do not it is negative
+;; green colored link indicates match
+
+to det-match
+ ask teachers[ ask links  [
+             ifelse [race] of end1 * [race] of end2 > 0 [set color green
+                                                         set thickness 0.2
+                                                         ask end1[ set match 1
+                                                                   ;set nmatches nmatches + 1
+                                                                   ]]
+                                                         [set color red
+                                                          ask end1 [set match 0]]]]
+
+
+end
+
+to normalize
+ ask students [
+    set rachiev (achiev - mean [achiev] of students)/ standard-deviation [achiev] of students
+     ]
+end
+
+;; Used code form the standard netlogo library to create charts
+to setup-graph
+  set-current-plot "Relative Achievement"
+  set-current-plot-pen "axis"
+  ;; we don't want the "auto-plot" feature to cause the
+  ;; plot's x range to grow when we draw the axis.  so
+  ;; first we turn auto-plot off temporarily
+  auto-plot-off
+  ;; now we draw an axis by drawing a line from the origin...
+  plotxy 0 0
+  ;; ...to a point that's way, way, way off to the right.
+  plotxy 1000000000 0
+  ;; now that we're done drawing the axis, we can turn
+  ;; auto-plot back on again
+  auto-plot-on
+
+  set-current-plot "Absolute Achievement"
+  set-current-plot-pen "axis"
+  ;; we don't want the "auto-plot" feature to cause the
+  ;; plot's x range to grow when we draw the axis.  so
+  ;; first we turn auto-plot off temporarily
+  auto-plot-off
+  ;; now we draw an axis by drawing a line from the origin...
+  plotxy 0 0
+  ;; ...to a point that's way, way, way off to the right.
+  plotxy 1000000000 0
+  ;; now that we're done drawing the axis, we can turn
+  ;; auto-plot back on again
+  auto-plot-on
+
+
+  set-current-plot "Relative Achievement by Number of Matches"
+
+end
+
+to graph
+  set-current-plot "Relative Achievement"
+  set-current-plot-pen "Minorities"
+  plot mean [rachiev] of students with  [color = blue]
+  set-current-plot-pen "Whites"
+  plot mean [rachiev] of students with  [color = yellow]
+
+  set-current-plot "Absolute Achievement"
+  set-current-plot-pen "Minorities"
+  plot mean [achiev] of students with  [color = blue]
+  set-current-plot-pen "Whites"
+  plot mean [achiev] of students with  [color = yellow]
+
+  set-current-plot "Relative Achievement by Number of Matches"
+  ask students [plotxy nmatches rachiev]
+
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
-162
-214
-332
-385
+210
+10
+647
+448
 -1
 -1
-4.91
+13.0
 1
 10
 1
@@ -38,163 +185,6 @@ GRAPHICS-WINDOW
 1
 ticks
 30.0
-
-BUTTON
-208
-32
-272
-65
-Setup
-setup
-NIL
-1
-T
-OBSERVER
-NIL
-S
-NIL
-NIL
-1
-
-BUTTON
-291
-32
-354
-65
-Go
-go
-T
-1
-T
-OBSERVER
-NIL
-G
-NIL
-NIL
-1
-
-INPUTBOX
-27
-18
-142
-78
-initialWTSPopulation
-20.0
-1
-0
-Number
-
-INPUTBOX
-424
-18
-535
-78
-initialBTSPopulation
-15.0
-1
-0
-Number
-
-SLIDER
-27
-92
-268
-125
-WTSBirthFraction
-WTSBirthFraction
-0
-1
-1.0
-.01
-1
-NIL
-HORIZONTAL
-
-SLIDER
-28
-141
-268
-174
-WTSDeathProportionalityConstant
-WTSDeathProportionalityConstant
-0
-1
-0.27
-.01
-1
-NIL
-HORIZONTAL
-
-SLIDER
-294
-91
-535
-124
-BTSBirthFraction
-BTSBirthFraction
-0
-1
-1.0
-.01
-1
-NIL
-HORIZONTAL
-
-SLIDER
-294
-141
-535
-174
-BTSDeathProportionalityConstant
-BTSDeathProportionalityConstant
-0
-1
-0.2
-.01
-1
-NIL
-HORIZONTAL
-
-PLOT
-28
-195
-535
-473
-Sharks
-Time
-Population
-0.0
-5.0
-0.0
-10.0
-true
-true
-"" ""
-PENS
-"WTSPopulation" 1.0 0 -2674135 true "" ""
-"BTSPopulation" 1.0 0 -16777216 true "" ""
-
-MONITOR
-445
-279
-531
-324
-NIL
-WTSPopulation
-0
-1
-11
-
-MONITOR
-445
-343
-531
-388
-NIL
-BTSPopulation
-0
-1
-11
 
 @#$#@#$#@
 ## WHAT IS IT?
@@ -427,12 +417,19 @@ Polygon -7500403 true true 135 90 120 45 150 15 180 45 165 90
 
 sheep
 false
-0
-Rectangle -7500403 true true 151 225 180 285
-Rectangle -7500403 true true 47 225 75 285
-Rectangle -7500403 true true 15 75 210 225
-Circle -7500403 true true 135 75 150
-Circle -16777216 true false 165 76 116
+15
+Circle -1 true true 203 65 88
+Circle -1 true true 70 65 162
+Circle -1 true true 150 105 120
+Polygon -7500403 true false 218 120 240 165 255 165 278 120
+Circle -7500403 true false 214 72 67
+Rectangle -1 true true 164 223 179 298
+Polygon -1 true true 45 285 30 285 30 240 15 195 45 210
+Circle -1 true true 3 83 150
+Rectangle -1 true true 65 221 80 296
+Polygon -1 true true 195 285 210 285 210 240 240 210 195 210
+Polygon -7500403 true false 276 85 285 105 302 99 294 83
+Polygon -7500403 true false 219 85 210 105 193 99 201 83
 
 square
 false
@@ -521,11 +518,9 @@ Line -7500403 true 84 40 221 269
 wolf
 false
 0
-Polygon -7500403 true true 135 285 195 285 270 90 30 90 105 285
-Polygon -7500403 true true 270 90 225 15 180 90
-Polygon -7500403 true true 30 90 75 15 120 90
-Circle -1 true false 183 138 24
-Circle -1 true false 93 138 24
+Polygon -16777216 true false 253 133 245 131 245 133
+Polygon -7500403 true true 2 194 13 197 30 191 38 193 38 205 20 226 20 257 27 265 38 266 40 260 31 253 31 230 60 206 68 198 75 209 66 228 65 243 82 261 84 268 100 267 103 261 77 239 79 231 100 207 98 196 119 201 143 202 160 195 166 210 172 213 173 238 167 251 160 248 154 265 169 264 178 247 186 240 198 260 200 271 217 271 219 262 207 258 195 230 192 198 210 184 227 164 242 144 259 145 284 151 277 141 293 140 299 134 297 127 273 119 270 105
+Polygon -7500403 true true -1 195 14 180 36 166 40 153 53 140 82 131 134 133 159 126 188 115 227 108 236 102 238 98 268 86 269 92 281 87 269 103 269 113
 
 x
 false
@@ -536,74 +531,6 @@ Polygon -7500403 true true 30 75 75 30 270 225 225 270
 NetLogo 6.2.0
 @#$#@#$#@
 @#$#@#$#@
-0.01
-    org.nlogo.sdm.gui.AggregateDrawing 24
-        org.nlogo.sdm.gui.StockFigure "attributes" "attributes" 1 "FillColor" "Color" 225 225 182 268 110 60 40
-            org.nlogo.sdm.gui.WrappedStock "WTSPopulation" "initialWTSPopulation" 1
-        org.nlogo.sdm.gui.RateConnection 3 340 134 426 144 513 154 NULL NULL 0 0 0
-            org.jhotdraw.standard.ChopBoxConnector REF 1
-            org.jhotdraw.figures.ChopEllipseConnector
-                org.nlogo.sdm.gui.ReservoirFigure "attributes" "attributes" 1 "FillColor" "Color" 192 192 192 512 140 30 30
-            org.nlogo.sdm.gui.WrappedRate "WTS_Death_Prop_Fraction * BTSPopulation * WTSPopulation" "WTSDeaths" REF 2
-                org.nlogo.sdm.gui.WrappedReservoir  0   REF 6
-        org.nlogo.sdm.gui.ReservoirFigure "attributes" "attributes" 1 "FillColor" "Color" 192 192 192 62 140 30 30
-        org.nlogo.sdm.gui.RateConnection 3 92 154 174 144 256 134 NULL NULL 0 0 0
-            org.jhotdraw.figures.ChopEllipseConnector REF 9
-            org.jhotdraw.standard.ChopBoxConnector REF 1
-            org.nlogo.sdm.gui.WrappedRate "WTSPopulation * WTS_Birth_Fraction" "WTSBirths"
-                org.nlogo.sdm.gui.WrappedReservoir  REF 2 0
-        org.nlogo.sdm.gui.BindingConnection 2 256 134 174 144 NULL NULL 0 0 0
-            org.jhotdraw.standard.ChopBoxConnector REF 1
-            org.nlogo.sdm.gui.ChopRateConnector REF 10
-        org.nlogo.sdm.gui.BindingConnection 2 340 134 426 144 NULL NULL 0 0 0
-            org.jhotdraw.standard.ChopBoxConnector REF 1
-            org.nlogo.sdm.gui.ChopRateConnector REF 3
-        org.nlogo.sdm.gui.StockFigure "attributes" "attributes" 1 "FillColor" "Color" 225 225 182 268 328 60 40
-            org.nlogo.sdm.gui.WrappedStock "BTSPopulation" "initialBTSPopulation" 1
-        org.nlogo.sdm.gui.RateConnection 3 340 353 424 363 509 373 NULL NULL 0 0 0
-            org.jhotdraw.standard.ChopBoxConnector REF 21
-            org.jhotdraw.figures.ChopEllipseConnector
-                org.nlogo.sdm.gui.ReservoirFigure "attributes" "attributes" 1 "FillColor" "Color" 192 192 192 508 359 30 30
-            org.nlogo.sdm.gui.WrappedRate "BTS_Death_Prop_Fraction * WTSPopulation * BTSPopulation" "BTSDeaths" REF 22
-                org.nlogo.sdm.gui.WrappedReservoir  0   REF 26
-        org.nlogo.sdm.gui.ReservoirFigure "attributes" "attributes" 1 "FillColor" "Color" 192 192 192 56 360 30 30
-        org.nlogo.sdm.gui.RateConnection 3 86 374 171 363 256 352 NULL NULL 0 0 0
-            org.jhotdraw.figures.ChopEllipseConnector REF 29
-            org.jhotdraw.standard.ChopBoxConnector REF 21
-            org.nlogo.sdm.gui.WrappedRate "BTSPopulation * BTS_Birth_Fraction" "BTSBirths"
-                org.nlogo.sdm.gui.WrappedReservoir  REF 22 0
-        org.nlogo.sdm.gui.ConverterFigure "attributes" "attributes" 1 "FillColor" "Color" 130 188 183 90 460 50 50
-            org.nlogo.sdm.gui.WrappedConverter "BTSBirthFraction" "BTS_Birth_Fraction"
-        org.nlogo.sdm.gui.ConverterFigure "attributes" "attributes" 1 "FillColor" "Color" 130 188 183 456 467 50 50
-            org.nlogo.sdm.gui.WrappedConverter "BTSDeathProportionalityConstant" "BTS_Death_Prop_Fraction"
-        org.nlogo.sdm.gui.ConverterFigure "attributes" "attributes" 1 "FillColor" "Color" 130 188 183 457 236 50 50
-            org.nlogo.sdm.gui.WrappedConverter "WTSDeathProportionalityConstant" "WTS_Death_Prop_Fraction"
-        org.nlogo.sdm.gui.ConverterFigure "attributes" "attributes" 1 "FillColor" "Color" 130 188 183 94 231 50 50
-            org.nlogo.sdm.gui.WrappedConverter "WTSBirthFraction" "WTS_Birth_Fraction"
-        org.nlogo.sdm.gui.BindingConnection 2 127 239 174 144 NULL NULL 0 0 0
-            org.jhotdraw.contrib.ChopDiamondConnector REF 41
-            org.nlogo.sdm.gui.ChopRateConnector REF 10
-        org.nlogo.sdm.gui.BindingConnection 2 473 244 426 144 NULL NULL 0 0 0
-            org.jhotdraw.contrib.ChopDiamondConnector REF 39
-            org.nlogo.sdm.gui.ChopRateConnector REF 3
-        org.nlogo.sdm.gui.BindingConnection 2 318 316 426 144 NULL NULL 0 0 0
-            org.jhotdraw.standard.ChopBoxConnector REF 21
-            org.nlogo.sdm.gui.ChopRateConnector REF 3
-        org.nlogo.sdm.gui.BindingConnection 2 340 353 424 363 NULL NULL 0 0 0
-            org.jhotdraw.standard.ChopBoxConnector REF 21
-            org.nlogo.sdm.gui.ChopRateConnector REF 23
-        org.nlogo.sdm.gui.BindingConnection 2 256 352 171 363 NULL NULL 0 0 0
-            org.jhotdraw.standard.ChopBoxConnector REF 21
-            org.nlogo.sdm.gui.ChopRateConnector REF 30
-        org.nlogo.sdm.gui.BindingConnection 2 122 467 171 363 NULL NULL 0 0 0
-            org.jhotdraw.contrib.ChopDiamondConnector REF 35
-            org.nlogo.sdm.gui.ChopRateConnector REF 30
-        org.nlogo.sdm.gui.BindingConnection 2 473 474 424 363 NULL NULL 0 0 0
-            org.jhotdraw.contrib.ChopDiamondConnector REF 37
-            org.nlogo.sdm.gui.ChopRateConnector REF 23
-        org.nlogo.sdm.gui.BindingConnection 2 315 162 424 363 NULL NULL 0 0 0
-            org.jhotdraw.standard.ChopBoxConnector REF 1
-            org.nlogo.sdm.gui.ChopRateConnector REF 23
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@

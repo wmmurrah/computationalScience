@@ -40,7 +40,8 @@ for (i in 2:length(x)) {
     BTSpop[i] = BTSpop[i-1] + (BTSbirthRate - BTSdeathRate) * deltaX
 }
 
-plot(x,WTSpop,type="n",xlab="time (months)",ylab="population",ylim=c(0,28))
+plot(x,WTSpop,type="n",  xlab="time (months)",ylab="population",
+     ylim=c(0,50))
 lines(x,WTSpop,lwd=2,lty="solid")
 lines(x,BTSpop,lwd=1,lty="dashed")
 text(3.5,9,"BTS")
