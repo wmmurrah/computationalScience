@@ -291,7 +291,7 @@ to do-plots ; Plotting procedure called each step
       repeat numCultureTags
         [
         set ll remove 0 ([item i cultureTags] of actors)
-        set l sentence l map [? * i] ll
+          set l sentence l map [? -> ? * i]  ll
         set i i + 1
         ]
       set-current-plot-pen "Tags"
@@ -397,7 +397,7 @@ to rule-T
     set as sort-by [random 2 = 0] as
     foreach as
       [
-      if [MRS] of ? != [MRS] of a ; Check only actors with unequal MRS
+        if [MRS] of ? != [MRS] of a ; Check only actors with unequal MRS
         [
         set x ([MRS] of a < [MRS] of ?) ; Record which MRS is initially higher
         set p sqrt([MRS] of a * [MRS] of ?) ; Set a price
