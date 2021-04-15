@@ -1,49 +1,0 @@
-palette(gray(0:8 / 8))
-palette
-palette()
-lst = c(7,8,9)
-lst
-lst(0)
-lst[0]
-lst[1]
-c(2:5)
-runif(1,0,4)
-abs(c[-2, -3, -5])
-abs(c()-2, -3, -5))
-abs(c(-2, -3, -5))
-abs(c(-2, -3, -5+i))
-abs(c(-2, -3, -5 + i))
-abs(c(-2, -3, -5 + imag))
-runif(1, 0, 4)
-find([0,1,0,2]==0)
-find(c(0,1,0,2)==0)
-diag(3)
-6 %% 3
-7 %% 3
-t = seq(-1,40.1);plot(t,-4.9*t^2 + 15*t + 11)
-t = -2:0.1:5;
-t = seq(-2,5,0);plot(t, t^3 - 4*t^2 - t + 4)
-t = seq(0,12,0.1);plot(t, sqrt(t))
-x = seq(0,10,0.1);plot(x, log10(x))
-tbl = rnorm(10000)hist(tbl, breaks=30)
-source("source.R")
-source("source.R")
-maxp=10
-gray(seq(0,1,length=maxp)))
-gray(seq(0,1,length=maxp))
-source("test.R")
-source("source.R")
-source("test.R")
-source("source.R")
-source("test.R")
-source("source.R")
-source("test.R")
-source("source.R")
-source("test.R")
-source("test.R")
-source("test.R")
-source("test.R")
-source("test.R")
-source("test.R")
-source("source.R")
-source("test.R")

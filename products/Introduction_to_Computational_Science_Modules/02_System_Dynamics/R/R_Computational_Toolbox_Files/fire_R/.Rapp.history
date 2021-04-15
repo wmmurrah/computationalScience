@@ -1,0 +1,147 @@
+palette(gray(0:8 / 8))
+palette
+palette()
+lst = c(7,8,9)
+lst
+lst(0)
+lst[0]
+lst[1]
+c(2:5)
+runif(1,0,4)
+abs(c[-2, -3, -5])
+abs(c()-2, -3, -5))
+abs(c(-2, -3, -5))
+abs(c(-2, -3, -5+i))
+abs(c(-2, -3, -5 + i))
+abs(c(-2, -3, -5 + imag))
+runif(1, 0, 4)
+find([0,1,0,2]==0)
+find(c(0,1,0,2)==0)
+diag(3)
+6 %% 3
+7 %% 3
+t = seq(-1,40.1);plot(t,-4.9*t^2 + 15*t + 11)
+t = -2:0.1:5;
+t = seq(-2,5,0);plot(t, t^3 - 4*t^2 - t + 4)
+t = seq(0,12,0.1);plot(t, sqrt(t))
+x = seq(0,10,0.1);plot(x, log10(x))
+tbl = rnorm(10000)hist(tbl, breaks=30)
+matrix(runif(9))
+matrix(runif(9),nrow(3))
+matrix(runif(9),nrows(3))
+matrix(runif(9),nrow=3)
+source("Fire.R")
+source("Fire.R")
+initForest(3,.5,.1)
+initForest(3,.5,1)
+forest = initForest(3,.5,.5)
+forest
+source("Fire.R")
+source("Fire.R")
+forest
+forestExtended = periodicLat(forest)
+forestExtended
+source("Fire.R")
+source("Fire.R")
+spread(0,0,1,1,2,.1,.1)
+spread(2,0,1,1,2,.1,.1)
+spread(1,0,1,1,2,.1,.1)
+spread(1,0,1,1,2,.1,.1)
+spread(1,0,1,1,2,.1,.1)
+spread(1,0,1,1,2,.1,.1)
+spread(1,0,1,1,2,.1,.1)
+spread(1,0,1,1,2,.1,.1)
+spread(1,0,1,1,2,.1,.1)
+spread(1,0,1,1,2,.1,.1)
+spread(1,0,1,1,2,.1,.1)
+spread(1,0,1,1,2,.1,.1)
+spread(1,0,1,1,2,.1,.1)
+spread(1,0,1,1,2,.1,.1)
+spread(1,0,1,1,2,.1,.1)
+spread(1,0,1,1,2,.1,1)
+source("Fire.R")
+spread(1,0,1,1,2,.1,1)
+spread(1,0,1,1,2,.1,0)
+spread(1,0,1,1,2,.1,0.1)
+spread(1,0,1,1,2,.1,0.1)
+spread(1,0,1,1,2,.1,0.1)
+spread(1,0,1,1,2,.1,0.1)
+spread(1,0,1,1,2,.1,0.1)
+spread(1,0,1,1,2,.1,0.1)
+spread(1,0,1,1,2,.1,0.1)
+spread(1,0,1,1,2,.1,0.1)
+source("Fire.R")
+grids = fire(15, 0.8, 0.001, 0.001, 0.3, 20)
+grids
+utils::globalVariables(c("EMPTY", "TREE", "BURNING"))#
+	EMPTY = 0#
+	TREE = 1#
+	BURNING = 2
+forest  = initForest( n, probTree, probBurning )
+n=15
+probTree=0.8
+probBurning=0.001
+probLightning0.001
+probLightning=0.001
+probImmune=0.3
+t=2
+forest  = initForest( n, probTree, probBurning )
+forest
+grids = array(dim=c(n,n,t))
+grids[,,1] = forest
+source("Fire.R")
+grids = fire(15, 0.8, 0.001, 0.001, 0.3, 2)
+grids
+grids = fire(15, 0.8, 0.001, 0.001, 0.3, 3)
+grids
+grids = fire(15, 0.8, 0.001, 0.001, 0.3, 2)
+grids
+forest = grids[,,1]
+source("Fire.R")
+source("Fire.R")
+source("Fire.R")
+source("Fire.R")
+source("Fire.R")
+source("Fire.R")
+grids
+source("Fire.R")
+grids
+forest = grids[,,1]
+forest
+rids[,,1] = forest
+n
+t
+rids = array(dim=c(n,n,t+1))
+rids[,,1] = forest
+forestExtended = periodicLat(forest)
+forestExtended
+forest = applyExtended(forestExtended, probLightning, probImmune)
+forest
+2:t+1
+2:(t+1)
+source("Fire.R")
+grids
+source("testFire.R")
+source("testFire.R")
+source("testFire.R")
+dim(grids)
+dim(grids)[3]
+showGraphs(grids)
+source("showGraphs.R")
+showGraphs(grids)
+source("testFire.R")
+source("showGraphs.R")
+showGraphs(grids)
+source("showGraphs.R")
+showGraphs(grids)
+source("testFire.R")
+fireList =fire(20, 0.5, 0.5,0.5, 0.5, 5)#
+showGraphs(fireList)
+fireList = fire(20,0.3,0.01,0,0,15)#
+showGraphs(fireList)
+fireList = fire(20,0.3,0.2,0,0.52,25)#
+showGraphs(fireList)
+source("showGraphs.R")
+showGraphs(fireList)
+showGraphs(fireList)
+showGraphs(fireList)

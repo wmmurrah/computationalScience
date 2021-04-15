@@ -1,0 +1,3 @@
+README
+
+Data Files for Module 8.3 on "Empirical Models"The data files are based on files from the National Institute of Standards and Technology (NIST) website on "Statistical Reference Datasets," as indicated in the "References" section for Module 8.3.  The name of each data file is as on the NIST site except that EM appears before the extension .txt or .dat.File names with the extension .txt give the file name for the data file, URL reference, original dataset name, description, reference, data in column format (y, then x), and statements in several computational tools assigning appropriate data lists to xLst and yLst.  The corresponding files with the extension .dat store only the data in column format (x, then y), which most computational tools can read.

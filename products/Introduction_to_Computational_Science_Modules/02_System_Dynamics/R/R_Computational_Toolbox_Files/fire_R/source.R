@@ -1,0 +1,7 @@
+source("initForest.R")
+source("periodicLat.R")
+source("spread.R")
+source("applyExtended.R")
+source("fire.R")
+source("pointsForGrid.R")
+source("showGraphs.R")
