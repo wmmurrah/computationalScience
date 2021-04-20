@@ -1,48 +1,126 @@
-patches-own [live-neighbors]
+;;*******************************************************
+;; Title: Sugerscape from scratch
+;; Author: William Murrah
+;; Description: Coding sugarscape simple from book
+;;******************************************************
 
+turtles-own [
+  sugar
+  metabolism
+  vision
+  vision-points
+]
+
+patches-own [
+  psugar
+  max-psugar
+]
+
+;;;;;;;;;;;; Setup Procedures ;;;;;;;;;;;;
 to setup
   clear-all
-  random-seed set-seed
-  ask patches [
-    ;; create approximately 10% alive patches
-    set pcolor blue - 3 ;; dark blue cells are dead
-    if random 100 < initial-percent-alive [
-      set pcolor green ;; green cells are alive
-    ]
-  ]
+  create-turtles initial-population [ turtle-setup]
+  setup-patches
   reset-ticks
 end
 
+to turtle-setup
+  set color blue
+  set shape "circle"
+  move-to one-of patches with [not any? other turtles-here]
+  set sugar random-in-range 5 25
+  set metabolism random-in-range 1 4
+  set vision random-in-range 1 6
+  set vision-points []
+  foreach (range 1 (vision + 1)) [n ->
+    set vision-points sentence vision-points (list(list 0 n) (list n 0) (list 0 (- n)) (list (- n) 0))
+  ]
+  run visualization
+
+end
+
+to setup-patches
+  file-open "sugar-map.txt"
+  foreach sort patches [ p ->
+    ask p [
+      set max-psugar file-read
+      set psugar max-psugar
+      patch-recolor
+    ]
+  ]
+  file-close
+end
+
+;;;;;;;;;;;; Runtime Procedures ;;;;;;;;;;;;
 to go
+  if not [any? turtles [
+    stop
+    ]
   ask patches [
-    ;; each patch counts its number of green neighboring patches
-    ;; and stores the value in its live-neighbors variable
-    set live-neighbors count neighbors with [pcolor = green]
-  ]
-  ;; 3 Rules of Life:
-  ask patches [
-    ;; 1. patches with 3 green neighbors, turn (or stay) green
-    if live-neighbors = 3 [set pcolor green]
-    ;; 2. patches with 0 or 1 green neighbors turn (or stay) dark blue
-    ;; (from isolation)
-    if live-neighbors = 0 or live-neighbors = 1 [set pcolor blue - 3]
-    ;; 3. patches with 4 or more green neighbors turn (or stay) dark blue
-    ;; (from overcrowding)
-    if live-neighbors >= 4 [set pcolor blue - 3]
-  ]
+      patch-growback
+      patch-recolor
+    ]
+  ask turtles [
+      turtle-move
+      turtle-eat
+      if sugar <= 0
+      [die]
+      run visualization
+    ]
   tick
+end
+
+
+;;;;;;;;;;;; Procedures ;;;;;;;;;;;;
+
+to turtle-move
+  let move-candidates (patch-set patch-here (patches at-points vision-points)
+end
+
+to turtle-eat
+
+end
+
+
+
+
+to patch-growback
+  set psugar max-psugar
+end
+
+
+to patch-recolor
+  ;; Color patches based on the amount of sugar they have.
+  set pcolor (yellow + 4.9 - psugar)
+end
+
+;; Generate random number in given range.
+to-report random-in-range [low high]
+  report low + random (high - low + 1)
+end
+
+to no-visualization
+  set color red
+end
+
+to color-agents-by-vision
+  set color red - (vision - 3.5)
+end
+
+to color-agents-by-metabolism
+  set color red - (metabolism - 2.5)
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
-210
-10
-1220
-621
+239
+23
+647
+432
 -1
 -1
-2.0
+8.0
 1
-4
+10
 1
 1
 1
@@ -50,39 +128,39 @@ GRAPHICS-WINDOW
 1
 1
 1
--250
-250
--150
-150
-1
-1
+0
+49
+0
+49
+0
+0
 1
 ticks
 30.0
 
 BUTTON
+47
+63
+128
+96
+go once
+go
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+37
 108
-80
-174
-113
-setup
-setup
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-BUTTON
-110
-194
-173
-227
-go 
+137
+141
+ go forever
 go
 T
 1
@@ -95,12 +173,12 @@ NIL
 1
 
 BUTTON
-110
-133
-173
-180
-go-once
-go
+55
+22
+121
+55
+NIL
+setup\n
 NIL
 1
 T
@@ -111,27 +189,30 @@ NIL
 NIL
 1
 
-INPUTBOX
-38
-247
-199
-307
-set-seed
-3.0
+SLIDER
+14
+179
+186
+212
+initial-population
+initial-population
+10
+500
+272.0
 1
-0
-Number
+1
+NIL
+HORIZONTAL
 
-INPUTBOX
-33
-340
-194
-400
-initial-percent-alive
-5.0
-1
+CHOOSER
 0
-Number
+235
+229
+280
+visualization
+visualization
+"no-visualization" "color-agents-by-vision" "color-agents-by-metabolism"
+1
 
 @#$#@#$#@
 ## WHAT IS IT?

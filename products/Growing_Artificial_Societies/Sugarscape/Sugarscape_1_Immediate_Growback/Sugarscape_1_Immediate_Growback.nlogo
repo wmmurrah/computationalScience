@@ -1,48 +1,143 @@
-patches-own [live-neighbors]
+turtles-own [
+  sugar           ;; the amount of sugar this turtle has
+  metabolism      ;; the amount of sugar that each turtles loses each tick
+  vision          ;; the distance that this turtle can see in the horizontal and vertical directions
+  vision-points   ;; the points that this turtle can see in relative to it's current position (based on vision)
+]
+
+patches-own [
+  psugar           ;; the amount of sugar on this patch
+  max-psugar       ;; the maximum amount of sugar that can be on this patch
+]
+
+;;
+;; Setup Procedures
+;;
 
 to setup
   clear-all
-  random-seed set-seed
-  ask patches [
-    ;; create approximately 10% alive patches
-    set pcolor blue - 3 ;; dark blue cells are dead
-    if random 100 < initial-percent-alive [
-      set pcolor green ;; green cells are alive
-    ]
-  ]
+  create-turtles initial-population [ turtle-setup ]
+  setup-patches
   reset-ticks
 end
 
-to go
-  ask patches [
-    ;; each patch counts its number of green neighboring patches
-    ;; and stores the value in its live-neighbors variable
-    set live-neighbors count neighbors with [pcolor = green]
+to turtle-setup ;; turtle procedure
+  set color red
+  set shape "circle"
+  move-to one-of patches with [not any? other turtles-here]
+  set sugar random-in-range 5 25
+  set metabolism random-in-range 1 4
+  set vision random-in-range 1 6
+  ;; turtles can look horizontally and vertically up to vision patches
+  ;; but cannot look diagonally at all
+  set vision-points []
+  foreach n-values vision [? + 1]
+  [
+    set vision-points sentence vision-points (list (list 0 ?) (list ? 0) (list 0 (- ?)) (list (- ?) 0))
   ]
-  ;; 3 Rules of Life:
+  run visualization
+end
+
+to setup-patches
+  file-open "sugar-map.txt"
+  foreach sort patches
+  [
+    ask ?
+    [
+      set max-psugar file-read
+      set psugar max-psugar
+      patch-recolor
+    ]
+  ]
+  file-close
+end
+
+;;
+;; Runtime Procedures
+;;
+
+to go
+  if not any? turtles [
+    stop
+  ]
   ask patches [
-    ;; 1. patches with 3 green neighbors, turn (or stay) green
-    if live-neighbors = 3 [set pcolor green]
-    ;; 2. patches with 0 or 1 green neighbors turn (or stay) dark blue
-    ;; (from isolation)
-    if live-neighbors = 0 or live-neighbors = 1 [set pcolor blue - 3]
-    ;; 3. patches with 4 or more green neighbors turn (or stay) dark blue
-    ;; (from overcrowding)
-    if live-neighbors >= 4 [set pcolor blue - 3]
+    patch-growback
+    patch-recolor
+  ]
+  ask turtles [
+    turtle-move
+    turtle-eat
+    if sugar <= 0
+      [ die ]
+    run visualization
   ]
   tick
 end
+
+to turtle-move ;; turtle procedure
+  ;; consider moving to unoccupied patches in our vision, as well as staying at the current patch
+  let move-candidates (patch-set patch-here (patches at-points vision-points) with [not any? turtles-here])
+  let possible-winners move-candidates with-max [psugar]
+  if any? possible-winners [
+    ;; if there are any such patches move to one of the patches that is closest
+    move-to min-one-of possible-winners [distance myself]
+  ]
+end
+
+to turtle-eat ;; turtle procedure
+  ;; metabolize some sugar, and eat all the sugar on the current patch
+  set sugar (sugar - metabolism + psugar)
+  set psugar 0
+end
+
+to patch-recolor ;; patch procedure
+  ;; color patches based on the amount of sugar they have
+  set pcolor (yellow + 4.9 - psugar)
+end
+
+to patch-growback ;; patch procedure
+  ;; immediately grow back all of the sugar for the patch
+  set psugar max-psugar
+end
+
+;;
+;; Utilities
+;;
+
+to-report random-in-range [low high]
+  report low + random (high - low + 1)
+end
+
+;;
+;; Visualization Procedures
+;;
+
+to no-visualization ;; turtle procedure
+  set color red
+end
+
+to color-agents-by-vision ;; turtle procedure
+  set color red - (vision - 3.5)
+end
+
+to color-agents-by-metabolism ;; turtle procedure
+  set color red + (metabolism - 2.5)
+end
+
+
+; Copyright 2009 Uri Wilensky.
+; See Info tab for full copyright and license.
 @#$#@#$#@
 GRAPHICS-WINDOW
-210
+300
 10
-1220
-621
+710
+441
 -1
 -1
-2.0
+8.0
 1
-4
+10
 1
 1
 1
@@ -50,10 +145,10 @@ GRAPHICS-WINDOW
 1
 1
 1
--250
-250
--150
-150
+0
+49
+0
+49
 1
 1
 1
@@ -61,11 +156,11 @@ ticks
 30.0
 
 BUTTON
-108
-80
-174
-113
-setup
+10
+55
+90
+95
+NIL
 setup
 NIL
 1
@@ -78,11 +173,11 @@ NIL
 1
 
 BUTTON
-110
-194
-173
-227
-go 
+100
+55
+190
+95
+NIL
 go
 T
 1
@@ -95,11 +190,11 @@ NIL
 1
 
 BUTTON
-110
-133
-173
-180
-go-once
+200
+55
+290
+95
+go once
 go
 NIL
 1
@@ -111,64 +206,182 @@ NIL
 NIL
 1
 
-INPUTBOX
-38
-247
-199
-307
-set-seed
-3.0
-1
+CHOOSER
+10
+105
+290
+150
+visualization
+visualization
+"no-visualization" "color-agents-by-vision" "color-agents-by-metabolism"
 0
-Number
 
-INPUTBOX
-33
-340
-194
+PLOT
+720
+10
+940
+165
+Population
+NIL
+NIL
+0.0
+10.0
+0.0
+10.0
+true
+false
+"" ""
+PENS
+"default" 1.0 0 -16777216 true "" "plotxy ticks count turtles"
+
+PLOT
+950
+10
+1170
+165
+Wealth distribution
+NIL
+NIL
+0.0
+10.0
+0.0
+10.0
+true
+false
+"" ""
+PENS
+"default" 1.0 1 -16777216 true "" "set-histogram-num-bars 10\nset-plot-x-range 0 (max [sugar] of turtles)\nset-plot-pen-interval ((max [sugar] of turtles) / 10)\nhistogram [sugar] of turtles"
+
+SLIDER
+10
+15
+290
+48
+initial-population
+initial-population
+10
+1000
 400
-initial-percent-alive
-5.0
+10
 1
-0
-Number
+NIL
+HORIZONTAL
+
+PLOT
+720
+175
+940
+330
+Average vision
+NIL
+NIL
+0.0
+10.0
+0.0
+6.0
+true
+false
+"" ""
+PENS
+"default" 1.0 0 -16777216 true "" "plotxy ticks mean [vision] of turtles"
+
+PLOT
+950
+175
+1170
+330
+Average metabolism
+NIL
+NIL
+0.0
+10.0
+0.0
+5.0
+true
+false
+"" ""
+PENS
+"default" 1.0 0 -16777216 true "" "plotxy ticks mean [metabolism] of turtles"
+
+MONITOR
+95
+160
+190
+209
+population
+count turtles
+17
+1
+12
 
 @#$#@#$#@
 ## WHAT IS IT?
 
-(a general understanding of what the model is trying to show or explain)
+This first model in the NetLogo Sugarscape suite implements Epstein & Axtell's Sugarscape Immediate Growback model, as described in chapter 2 of their book Growing Artificial Societies: Social Science from the Bottom Up. It simulates a population with limited, spatially-distributed resources available.
 
 ## HOW IT WORKS
 
-(what rules the agents use to create the overall behavior of the model)
+Each patch contains some sugar, the maximum amount of which is predetermined. At each tick, each patch grows back fully to have the maximum amount of sugar. The amount of sugar a patch currently contains is indicated by its color; the darker the yellow, the more sugar.
+
+At setup, agents are placed at random within the world. Each agent can only see a certain distance horizontally and vertically. At each tick, each agent will move to the nearest unoccupied location within their vision range with the most sugar, and collect all the sugar there.  If its current location has as much or more sugar than any unoccupied location it can see, it will stay put.
+
+Agents also use (and thus lose) a certain amount of sugar each tick, based on their metabolism rates. If an agent runs out of sugar, it dies.
 
 ## HOW TO USE IT
 
-(how to use the model, including a description of each of the items in the Interface tab)
+Set the INITIAL-POPULATION slider before pressing SETUP. This determines the number of agents in the world.
+
+Press SETUP to populate the world with agents and import the sugar map data. GO will run the simulation continuously, while GO ONCE will run one tick.
+
+The VISUALIZATION chooser gives different visualization options and may be changed while the GO button is pressed. When NO-VISUALIZATION is selected all the agents will be red. When COLOR-AGENTS-BY-VISION is selected the agents with the longest vision will be darkest and, similarly, when COLOR-AGENTS-BY-METABOLISM is selected the agents with the lowest metabolism will be darkest.
+
+The four plots show the world population over time, the distribution of sugar among the agents, the mean vision of all surviving agents over time, and the mean metabolism of all surviving agents over time.
 
 ## THINGS TO NOTICE
 
-(suggested things for the user to notice while running the model)
+After 20 ticks or so, many agents are no longer moving or are only moving a little. This is because the agents have reached places in the world where they can no longer see better unoccupied locations near them. Since all sugar grows back instantaneously each tick, agents tend to remain on the same patch.
+
+Agents tend to congregate in "layers" around borders where sugar production levels change. This unintended behavior comes from the limitation of the agents' vision ranges. Agents that cannot see past the current sugar production grounds have no incentive to move, and so each agent only moves to the closest location with more sugar. This effect is more less apparent depending on the initial population.
 
 ## THINGS TO TRY
 
-(suggested things for the user to try to do (move sliders, switches, etc.) with the model)
-
-## EXTENDING THE MODEL
-
-(suggested things to add or change in the Code tab to make the model more complicated, detailed, accurate, etc.)
+Try varying the initial POPULATION. What effect does the initial POPULATION have on the final stable population? Does it have an effect on the distribution of agent properties, such as vision and metabolism?
 
 ## NETLOGO FEATURES
 
-(interesting or unusual features of NetLogo that the model uses, particularly in the Code tab; or where workarounds were needed for missing features)
+All of the Sugarscape models create the world by using `file-read` to import data from an external file, `sugar-map.txt`. This file defines both the initial and the maximum sugar value for each patch in the world.
+
+Since agents cannot see diagonally we cannot use `in-radius` to find the patches in the agents' vision.  Instead, we use `at-points`.
 
 ## RELATED MODELS
 
-(models in the NetLogo Models Library and elsewhere which are of related interest)
+Other models in the NetLogo Sugarscape suite include:
+
+* Sugarscape 2 Constant Growback
+* Sugarscape 3 Wealth Distribution
 
 ## CREDITS AND REFERENCES
 
-(a reference to the model's URL on the web if it has one, as well as any other necessary credits, citations, and links)
+Epstein, J. and Axtell, R. (1996). Growing Artificial Societies: Social Science from the Bottom Up.  Washington, D.C.: Brookings Institution Press.
+
+
+## HOW TO CITE
+
+If you mention this model in a publication, we ask that you include these citations for the model itself and for the NetLogo software:
+
+* Li, J. and Wilensky, U. (2009).  NetLogo Sugarscape 1 Immediate Growback model.  http://ccl.northwestern.edu/netlogo/models/Sugarscape1ImmediateGrowback.  Center for Connected Learning and Computer-Based Modeling, Northwestern Institute on Complex Systems, Northwestern University, Evanston, IL.
+* Wilensky, U. (1999). NetLogo. http://ccl.northwestern.edu/netlogo/. Center for Connected Learning and Computer-Based Modeling, Northwestern Institute on Complex Systems, Northwestern University, Evanston, IL.
+
+## COPYRIGHT AND LICENSE
+
+Copyright 2009 Uri Wilensky.
+
+![CC BY-NC-SA 3.0](http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png)
+
+This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 3.0 License.  To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/3.0/ or send a letter to Creative Commons, 559 Nathan Abbott Way, Stanford, California 94305, USA.
+
+Commercial licenses are also available. To inquire about commercial licenses, please contact Uri Wilensky at uri@northwestern.edu.
+
 @#$#@#$#@
 default
 true
@@ -362,22 +575,6 @@ Polygon -7500403 true true 135 105 90 60 45 45 75 105 135 135
 Polygon -7500403 true true 165 105 165 135 225 105 255 45 210 60
 Polygon -7500403 true true 135 90 120 45 150 15 180 45 165 90
 
-sheep
-false
-15
-Circle -1 true true 203 65 88
-Circle -1 true true 70 65 162
-Circle -1 true true 150 105 120
-Polygon -7500403 true false 218 120 240 165 255 165 278 120
-Circle -7500403 true false 214 72 67
-Rectangle -1 true true 164 223 179 298
-Polygon -1 true true 45 285 30 285 30 240 15 195 45 210
-Circle -1 true true 3 83 150
-Rectangle -1 true true 65 221 80 296
-Polygon -1 true true 195 285 210 285 210 240 240 210 195 210
-Polygon -7500403 true false 276 85 285 105 302 99 294 83
-Polygon -7500403 true false 219 85 210 105 193 99 201 83
-
 square
 false
 0
@@ -462,20 +659,14 @@ Line -7500403 true 40 84 269 221
 Line -7500403 true 40 216 269 79
 Line -7500403 true 84 40 221 269
 
-wolf
-false
-0
-Polygon -16777216 true false 253 133 245 131 245 133
-Polygon -7500403 true true 2 194 13 197 30 191 38 193 38 205 20 226 20 257 27 265 38 266 40 260 31 253 31 230 60 206 68 198 75 209 66 228 65 243 82 261 84 268 100 267 103 261 77 239 79 231 100 207 98 196 119 201 143 202 160 195 166 210 172 213 173 238 167 251 160 248 154 265 169 264 178 247 186 240 198 260 200 271 217 271 219 262 207 258 195 230 192 198 210 184 227 164 242 144 259 145 284 151 277 141 293 140 299 134 297 127 273 119 270 105
-Polygon -7500403 true true -1 195 14 180 36 166 40 153 53 140 82 131 134 133 159 126 188 115 227 108 236 102 238 98 268 86 269 92 281 87 269 103 269 113
-
 x
 false
 0
 Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
+
 @#$#@#$#@
-NetLogo 6.2.0
+NetLogo 5.0.4
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
@@ -491,6 +682,7 @@ true
 0
 Line -7500403 true 150 150 90 180
 Line -7500403 true 150 150 210 180
+
 @#$#@#$#@
-0
+1
 @#$#@#$#@

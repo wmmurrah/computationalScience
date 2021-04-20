@@ -266,11 +266,11 @@ end
 GRAPHICS-WINDOW
 295
 10
-703
-419
+796
+512
 -1
 -1
-8.0
+9.86
 1
 10
 1
@@ -349,7 +349,7 @@ CHOOSER
 visualization
 visualization
 "no-visualization" "color-agents-by-vision" "color-agents-by-metabolism"
-1
+2
 
 SLIDER
 10
@@ -382,10 +382,10 @@ NIL
 HORIZONTAL
 
 PLOT
-710
-220
-970
-420
+1085
+230
+1345
+430
 Gini index vs. time
 Time
 Gini
@@ -460,10 +460,10 @@ NIL
 HORIZONTAL
 
 PLOT
-710
-10
-970
-220
+820
+15
+1080
+225
 Population
 NIL
 NIL
@@ -478,10 +478,10 @@ PENS
 "default" 1.0 0 -16777216 true "" "plot count turtles"
 
 PLOT
-970
-220
-1245
-420
+1080
+430
+1355
+630
 Turtle attributes
 NIL
 NIL
@@ -524,10 +524,10 @@ NIL
 HORIZONTAL
 
 PLOT
-970
-10
-1245
-220
+1080
+15
+1355
+225
 resources
 NIL
 NIL
@@ -543,10 +543,10 @@ PENS
 "spice" 1.0 0 -2674135 true "" "plot sum [pspice] of patches"
 
 PLOT
-1245
-220
-1510
-420
+815
+430
+1080
+630
 Price
 NIL
 NIL
@@ -561,10 +561,10 @@ PENS
 "average" 1.0 0 -16777216 true "" "if ticks > 0 and length prices > 0 [plot mean prices]"
 
 PLOT
-1245
-10
-1510
-220
+820
+225
+1085
+435
 trades
 NIL
 NIL
