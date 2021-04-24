@@ -1,65 +1,63 @@
           ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-          ;;                        AGENT_ZERO 
-          ;;        Supplementary Applet 1. Sub_Thresholds. 
+          ;;                        AGENT_ZERO
+          ;;        Supplementary Applet 1. Sub_Thresholds.
           ;; Corresponds to Supplementary Discussion 1 on the Website:
           ;;
-          ;;                    A Road Not Taken 
-          ;;                                     
-          ;;  
-          ;;                       Version 1.0 
-          ;;               
-          ;;                     Joshua M. Epstein  
-          ;;                       December 2013  
-          ;;                      
+          ;;                    A Road Not Taken
+          ;;
+          ;;
+          ;;                       Version 1.0
+          ;;
+          ;;                     Joshua M. Epstein
+          ;;                       December 2013
+          ;;
           ;;                Sliders [70, 0, 4, 0, 1] Seed 1
           ;;
           ;;  Note: Decomposes Tau into Tau_V + Tau_P.
           ;;  Expresses Action condition as D = (V-Tau_V) + (P-Tau_P) > 0.
           ;;  Action is exactly as in single Tau formulation.
-          ;;  But net_V and net_P can now disagree in sign. 
-          ;;  Code given is overpowered for demo. Main changes are turtles-own 
+          ;;  But net_V and net_P can now disagree in sign.
+          ;;  Code given is overpowered for demo. Main changes are turtles-own
           ;;  declaration with two thresholds, and update-disposition code.
-          ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;  
-        
-
-
-to use-new-seed
-  let my-seed new-seed           
-  output-print word "Generated seed: " my-seed 
-  random-seed my-seed          
-end
-
-to use-seed-from-user
-  let my-seed read-from-string user-input "Enter a random seed (an integer):"  
-  output-print word "User-entered seed: " my-seed 
-  random-seed my-seed           
-end
+          ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 turtles-own [
             affect
             learning_rate
             lambda
-            delta 
-            age                                           
-            v_threshold 
+            delta
+            age
+            v_threshold
             p_threshold
-            event_count 
+            event_count
             disposition
             probability
-            memory         
+            memory
             ]
+
+to use-new-seed
+  let my-seed new-seed
+  output-print word "Generated seed: " my-seed
+  random-seed my-seed
+end
+
+to use-seed-from-user
+  let my-seed read-from-string user-input "Enter a random seed (an integer):"
+  output-print word "User-entered seed: " my-seed
+  random-seed my-seed
+end
 
 
 to setup
   __clear-all-and-reset-ticks
-  ;use-new-seed 
-  use-seed-from-user 
+  ;use-new-seed
+  use-seed-from-user
   setup-patches
   setup-turtles
-; movie-start "out.mov"    
-; movie-grab-view         
-; repeat 135 
-;    [ go 
+; movie-start "out.mov"
+; movie-grab-view
+; repeat 135
+;    [ go
 ;    movie-grab-view ]
 ;   movie-close
  tick
@@ -67,12 +65,12 @@ end
 
 to setup-turtles
   set-default-shape turtles "person"
-  create-turtles 1  
+  create-turtles 1
   ask turtle 0 [
                 setxy 9 9
                 set color blue
                 set age random 20
-                set affect 0.001 
+                set affect 0.001
                 set delta 0
                 set lambda 1
                 set learning_rate .1
@@ -82,18 +80,18 @@ to setup-turtles
                 set disposition 0
                 set probability 0
                 set memory []
-                  repeat memory_length 
+                  repeat memory_length
                     [set memory lput random-float 0 memory]
-                ;set memory [0]                
+                ;set memory [0]
                 ;set memory [0 0 0 0]
                 ;set label who
-                ]  
+                ]
 end
-  
+
 to setup-patches
-  ask patches [set pcolor yellow + random 2]  
+  ask patches [set pcolor yellow + random 2]
 end
-  
+
 to go
   if ticks >= 50000 [stop]
   activate-patches
@@ -101,7 +99,7 @@ to go
   update-probability
   update-disposition
    ; take-action
-  deactivate-patches 
+  deactivate-patches
   do-plots1
   do-plots2
   do-plots3
@@ -109,51 +107,51 @@ to go
  tick
 end
 
-to update-affect 
+to update-affect
    ask turtles [
-        if pcolor = orange + 1 
-           [set affect affect + (learning_rate * (affect ^ delta) * (lambda - affect))]    
+        if pcolor = orange + 1
+           [set affect affect + (learning_rate * (affect ^ delta) * (lambda - affect))]
         if pcolor != orange + 1
-           [set affect affect + (learning_rate * (affect ^ delta) * extinction_rate *(0 - affect))] 
+           [set affect affect + (learning_rate * (affect ^ delta) * extinction_rate *(0 - affect))]
                ]
 end
 
 to update-probability
  ask turtles[
  let current_probability  (count patches in-radius vision with [pcolor = orange + 1]/(count patches in-radius vision))
- set memory but-first memory                                                     
- set memory lput current_probability memory                                
+ set memory but-first memory
+ set memory lput current_probability memory
  set probability mean memory
- ;set probability median memory                                          
+ ;set probability median memory
    ]
  end
- 
+
 to update-disposition
  ask turtle 0 [
    set disposition affect - v_threshold + probability  - p_threshold]
 end
 
 to move-turtles
-  ask turtles [   
+  ask turtles [
     right random 360
     forward 1
     ]
 end
-  
-to take-action  
-  ask turtles [                                            
+
+to take-action
+  ask turtles [
     if disposition > 0 [ask patches in-radius action_radius [set pcolor red - 3]]
-    ]    
+    ]
 end
 
-to activate-patches  
+to activate-patches
  ask patches with [pycor > 0]
       [if random 1000 < attack_rate and pcolor != red - 3 [set pcolor orange + 1]]
 end
 
 to deactivate-patches
- ask patches with [ pycor > 0]     
-      [if random 100 < 8 and pcolor != red - 3 [set pcolor yellow + random 2]]     
+ ask patches with [ pycor > 0]
+      [if random 100 < 8 and pcolor != red - 3 [set pcolor yellow + random 2]]
 end
 
 to do-plots1
@@ -161,14 +159,14 @@ to do-plots1
     set-current-plot-pen "turtle 0"
     plot [disposition] of turtle 0
    end
-   
-to do-plots2    
+
+to do-plots2
     set-current-plot "Net Probability"
     set-current-plot-pen "turtle 0"
     plot [probability - p_threshold] of turtle 0
    end
 
-to do-plots3    
+to do-plots3
     set-current-plot "Net Affect"
     set-current-plot-pen "turtle 0"
     plot [affect - v_threshold] of turtle 0
@@ -177,10 +175,10 @@ to do-plots3
 GRAPHICS-WINDOW
 205
 10
-644
-470
-16
-16
+642
+448
+-1
+-1
 13.0
 1
 10
@@ -275,7 +273,7 @@ attack_rate
 attack_rate
 0
 1000
-70
+70.0
 1
 1
 NIL
@@ -290,7 +288,7 @@ extinction_rate
 extinction_rate
 0
 .5
-0
+0.0
 .01
 1
 NIL
@@ -305,7 +303,7 @@ vision
 vision
 1
 35
-4
+4.0
 1
 1
 NIL
@@ -320,7 +318,7 @@ action_radius
 action_radius
 0
 5
-0
+0.0
 1
 1
 NIL
@@ -355,7 +353,7 @@ memory_length
 memory_length
 1
 100
-1
+1.0
 1
 1
 NIL
@@ -664,9 +662,8 @@ false
 0
 Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
-
 @#$#@#$#@
-NetLogo 5.0.5
+NetLogo 6.2.0
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
@@ -693,7 +690,6 @@ true
 0
 Line -7500403 true 150 150 90 180
 Line -7500403 true 150 150 210 180
-
 @#$#@#$#@
 0
 @#$#@#$#@

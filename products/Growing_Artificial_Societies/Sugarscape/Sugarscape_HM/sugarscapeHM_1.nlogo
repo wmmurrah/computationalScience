@@ -67,6 +67,7 @@ to go
       [die]
       run visualization
     ]
+  ]
   tick
 end
 
@@ -80,11 +81,6 @@ end
 to turtle-eat
 
 end
-
-to die
-
-end
-
 
 to patch-growback
   set psugar max-psugar
