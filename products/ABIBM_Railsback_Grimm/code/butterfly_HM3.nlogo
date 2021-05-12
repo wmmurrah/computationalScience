@@ -1,104 +1,101 @@
-globals
-[
-  ;q    Moved to slider on the Interface
-      ; q is the probability that butterfly moves
-      ; directly to the highest surrounding patch
-]
+;;----------------------------------------------------------------------
+;; Title: Butterfly Model
+;; Author: William Murrah
+;; Description: Version of the textbook example from chapter 4 of
+;;              Agent-Based and Individual-Based Modeling: A Practical
+;;              Introduction (2019).
+;; Created: 2021-04-24
+;;----------------------------------------------------------------------
 
-patches-own
-[
-  elevation
+globals[
+  q         ;; Probability that agent moves uphill, 1 - q probability
+             ;  moving randomly, set by proportion-of-moves-uphill
+             ;  slider in create-landcape procedure.
+]
+patches-own[
+  elevation ;; patches are of different elevations
   used?
 ]
+turtles-own [
+  origin                 ;; Turtle's starting patch
+]
 
-turtles-own [ start-patch ]
 
+;; Main ----------------------------------------------------------------
+;; Initialize turtles and environment
 to setup
-
-  ca
-
-  ; Assign an elevation to patches and color them by it
-  ; Now we read the elevations in from a file
-  file-open "ElevationData.txt"
-  while [ not file-at-end? ]
+  clear-all
+  file-open "../data/ElevationData.txt"
+  while [not file-at-end?]
   [
     let next-X file-read
     let next-Y file-read
     let next-elevation file-read
-    ask patch next-X next-Y [ set elevation next-elevation ]
+    ask patch next-X next-Y [set elevation next-elevation]
   ]
   file-close
+  create-turtles number-butterflies [
+    setxy random-xcor random-ycor  ;; Each butterfly gets randomly
+                                    ;  placed in environment.
+    set size 3                     ;; make turtles more visible
+    pen-down                       ;; record turtle paths on display
+    set origin patch-here
+  ]
+  create-landscape                 ;; see procedures
+  reset-ticks
+end; of setup
+
+;; Primary process procedure
+to go
+  ask turtles [
+    move
+  ]
+  plot corridor-width
+  tick
+  if ticks >= 1000 [
+    output-print (word "Corridor width: " precision corridor-width 2)
+    export-plot "Corridor Width" (word"../data/corridor-width-data/corridor-width_" q ".csv")
+    stop   ;; stop simulation when this tick reached
+  ]
+end; of go
+
+;; Procedures ----------------------------------------------------------
+;; Create landscape with hills
+to create-landscape
 
   let min-elevation min [elevation] of patches
   let max-elevation max [elevation] of patches
-
-  ask patches
-  [
+  ask patches [
     set pcolor scale-color green elevation min-elevation max-elevation
+    set q proportion-of-moves-uphill ;; From slider set q
     set used? false
-  ] ; end of "ask patches"
+    ]
+end; of create-landscape
 
-  ; Create butterflies
-  crt 500
-  [
-    set size 2
+;; Turtle procedure: decide whether to move to the highest neighboring
+ ;  patch, with probability q, or to move to a randomly selected patch
+ ;  with probability 1 - q.
+to move
+  ifelse random-float 1.0 < q  ;; If random proportion less than q:
+  [uphill elevation]            ;  move uphill, if not:
+  [move-to one-of neighbors]    ;  randomly move to neighboring patch.
+  set used? true
+end; of move
 
-; Set initial location to a random patch
-    setxy random-pxcor random-pycor
-    pen-down
-    set start-patch patch-here
-  ]
 
-  ; Initialize the "q" parameter
-  ; set q 0.4  Moved to slider
-
-  reset-ticks
-
-end ; of setup procedure
-
-to go ; This is the master schedule
-
-  ask turtles [ move ]
-
-  plot corridor-width
-
-  tick
-  if ticks >= 1000
-  [
-    output-print (word "Corridor width: " corridor-width)
-    export-plot "Corridor width" (word "Corridor-output-for-q-" q ".csv")
-    stop
-  ]
-
+to-report corridor-width
+  let n-patches-used count patches with [used? = true]
+  let mean-distance mean [distance origin] of turtles
+  report (n-patches-used / mean-distance)
 end
 
-to move  ; The butterfly move procedure, in turtle context
-         ; Decide whether to move to the highest
-         ; surrounding patch with probability q
-
-  ifelse random-float 1.0 < q
-  [ uphill elevation ] ; Move deterministically uphill
-  [ move-to one-of neighbors ] ; Or move randomly
-
-  set used? true ; Record that the patch has been used by a butterfly
-
-end ; of move procedure
-
-to-report corridor-width ; A global procedure to calculate the corridor-width output
-
-  let num-patches-used count patches with [ used? ]
-
-  let mean-distance-moved mean [distance start-patch] of turtles
-
-  report num-patches-used / mean-distance-moved
-
-end
+;; END -----------------------------------------------------------------
 @#$#@#$#@
 GRAPHICS-WINDOW
-210
-10
-668
-469
+249
+12
+707
+471
 -1
 -1
 3.0
@@ -108,8 +105,8 @@ GRAPHICS-WINDOW
 1
 1
 0
-0
-0
+1
+1
 1
 0
 149
@@ -122,12 +119,12 @@ ticks
 30.0
 
 BUTTON
-16
-34
-79
-67
+58
+50
+124
+83
 NIL
-setup
+setup\n\n
 NIL
 1
 T
@@ -139,10 +136,27 @@ NIL
 1
 
 BUTTON
-87
-34
-150
-67
+56
+104
+119
+137
+step
+go
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+57
+164
+120
+197
 NIL
 go
 T
@@ -156,12 +170,27 @@ NIL
 1
 
 SLIDER
-16
-73
-188
-106
-q
-q
+12
+224
+184
+257
+number-butterflies
+number-butterflies
+0
+1000
+500.0
+1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+13
+280
+246
+313
+proportion-of-moves-uphill
+proportion-of-moves-uphill
 0
 1
 0.4
@@ -171,20 +200,20 @@ NIL
 HORIZONTAL
 
 OUTPUT
-11
-162
-190
-216
-11
+732
+28
+972
+82
+13
 
 PLOT
-4
-265
-204
-415
+735
+109
+1152
+409
+Corridor Width
+Tick
 Corridor width
-NIL
-NIL
 0.0
 10.0
 0.0
@@ -193,16 +222,11 @@ true
 false
 "" ""
 PENS
-"default" 1.0 0 -16777216 true "" ""
+"corridor width" 1.0 0 -16777216 true "" "plot corridor-width"
 
 @#$#@#$#@
 # Butterfly Model ODD Description
-This file is provided as instructor materials for Chapter 5 of _Agent-based and Individual-based Modeling, 2nd edition_, by Railsback and Grimm (2019). Please do not copy or distribute this file. It is available upon request from www.railsback-grimm-abm-book.com.
-
-This file is copyrighted 2019 by Steven F. Railsback and Volker Grimm.
-
-The file implements the Butterfly model as described in Section 5.5. 
-
+This file describes the model of Pe’er et al. (2005). The description is taken from Section 3.4 of Railsback and Grimm (2019). The file uses the markup language used by NetLogo's Info tab starting with NetLogo version 5.0.
 
 ## 1. Purpose and patterns
 The model was designed to explore questions about virtual corridors. Under what conditions do the interactions of butterfly hilltopping behavior and landscape topography lead to the emergence of virtual corridors, that is, relatively narrow paths along which many butterflies move? How does variability in the butterflies’ tendency to move uphill affect the emergence of virtual corridors? This model does not represent a specific place or species of butterfly, so only general patterns are used as criteria for its usefulness for answering these questions: that butterflies can reach hilltops, and that their movement has a strong stochastic element representing the effects of factors other than elevation.
@@ -234,11 +258,8 @@ The environment is assumed to be constant, so the model has no input data.
 The movement submodel defines exactly how butterflies decide whether to move uphill or randomly. First, to “move uphill” is defined specifically as moving to the neighbor patch that has the highest elevation; if two patches have the same elevation, one is chosen randomly. “Move randomly” is defined as moving to one of the neighboring patches, with equal probability of choosing any patch. “Neighbor patches” are the eight patches surrounding the butterfly’s current patch. The decision of whether to move uphill or randomly is controlled by the parameter _q_, which ranges from 0.0 to 1.0 (_q_ is a global variable: all butterflies use the same value). On each time step, each butterfly draws a random number from a uniform distribution between 0.0 and 1.0. If this random number is less than _q_, the butterfly moves uphill; otherwise, the butterfly moves randomly.
 
 ## CREDITS AND REFERENCES
-Pe’er, G., Saltz, D. & Frank, K. 2005. Virtual corridors for conservation management. _Conservation Biology_, 19, 1997–2003.
 
-Pe’er, G. 2003. Spatial and behavioral determinants of butterfly movement patterns in topographically complex landscapes. Ph.D. thesis, Ben-Gurion University of the Negev.
-
-Railsback, S. & Grimm, V. 2018. _Agent-based and individual-based modeling: A practical introduction, Second edition_. Princeton University Press, Princeton, NJ.
+(a reference to the model's URL on the web if it has one, as well as any other necessary credits, citations, and links)
 @#$#@#$#@
 default
 true

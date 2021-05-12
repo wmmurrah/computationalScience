@@ -1,48 +1,106 @@
-;; Title: Butterfly Model
-;;
-
-globals[
+globals
+[
+  red-count            ; population of red turtles
+  blue-count           ; population of blue turtles
 ]
 
-turtles-own [
-]
-
-patches-own[
-  elevation
+turtles-own
+[
+  fertility            ; the whole number part of fertility
+  fertility-remainder  ; the fractional part (after the decimal point)
 ]
 
 to setup
-  clear-all
-  create-turtles number-butterflies [
-    setxy 75 75
-    set shape "butterfly"
+  clear-output
+  setup-experiment
+end
+
+to setup-experiment
+  clear-patches
+  clear-turtles
+  clear-all-plots
+  clear-ticks
+  create-turtles carrying-capacity
+  [
+    setxy random-xcor random-ycor         ; randomize turtle locations
+    ifelse who < (carrying-capacity / 2)  ; start out with equal numbers of reds and blues
+      [ set color blue ]
+      [ set color red ]
+    set size 2                            ; easier to see
   ]
-  create-landscape
   reset-ticks
 end
 
 to go
-  a
+  reproduce
+  grim-reaper
   tick
 end
 
-
-;; Create landscape with elevation changes
-to create-landscape
-  ask patches [
-    set elevation 200 + (100 * (sin (pxcor * 3.8) + sin (pycor * 3.8)))
-    set pcolor scale-color green elevation 0 400
-    ]
+;; to enable many repetitions with same settings
+to go-experiment
+  go
+  if red-count = 0
+  [
+    output-print (word "red extinct after " ticks " generations")
+    setup-experiment
+  ]
+  if blue-count = 0
+  [
+    output-print (word "blue extinct after " ticks " generations")
+    setup-experiment
+  ]
 end
+
+to wander  ;; turtle procedure
+  rt random-float 30 - random-float 30
+  fd 1
+end
+
+to reproduce
+  ask turtles
+  [
+    ifelse color = red
+    [
+      set fertility floor red-fertility
+      set fertility-remainder red-fertility - (floor red-fertility)
+    ]
+    [
+      set fertility floor blue-fertility
+      set fertility-remainder blue-fertility - (floor blue-fertility)
+    ]
+    ifelse (random-float 100) < (100 * fertility-remainder)
+      [ hatch fertility + 1 [ wander ]]
+      [ hatch fertility     [ wander ]]
+  ]
+end
+
+;; kill turtles in excess of carrying capacity
+;; note that reds and blues have equal probability of dying
+to grim-reaper
+  let num-turtles count turtles
+  if num-turtles <= carrying-capacity
+    [ stop ]
+  let chance-to-die (num-turtles - carrying-capacity) / num-turtles
+  ask turtles
+  [
+    if random-float 1.0 < chance-to-die
+      [ die ]
+  ]
+end
+
+
+; Copyright 1997 Uri Wilensky.
+; See Info tab for full copyright and license.
 @#$#@#$#@
 GRAPHICS-WINDOW
-210
+290
 10
-668
-469
+702
+423
 -1
 -1
-3.0
+4.0
 1
 10
 1
@@ -52,57 +110,23 @@ GRAPHICS-WINDOW
 1
 1
 1
-0
-149
-0
-149
-0
-0
+-50
+50
+-50
+50
+1
+1
 1
 ticks
 30.0
 
 BUTTON
+145
+25
+265
 58
-50
-124
-83
-NIL
-setup\n\n
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-BUTTON
-56
-104
-119
-137
-step
-go
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-BUTTON
-57
-164
-120
-197
-NIL
-go
+run-experiment
+go-experiment
 T
 1
 T
@@ -111,59 +135,204 @@ NIL
 NIL
 NIL
 NIL
-1
+0
 
 SLIDER
-12
-224
-184
-257
-number-butterflies
-number-butterflies
-0
-100
-50.0
+15
+65
+265
+98
+carrying-capacity
+carrying-capacity
+1
+4000
+1000.0
 1
 1
-NIL
+turtles
 HORIZONTAL
+
+BUTTON
+15
+25
+75
+58
+setup
+setup
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+80
+25
+140
+58
+go
+go
+T
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+0
+
+SLIDER
+15
+135
+265
+168
+red-fertility
+red-fertility
+0.0
+10.0
+2.0
+0.1
+1
+children
+HORIZONTAL
+
+SLIDER
+15
+100
+265
+133
+blue-fertility
+blue-fertility
+0.0
+10.0
+5.0
+0.1
+1
+children
+HORIZONTAL
+
+PLOT
+4
+226
+284
+445
+Populations
+Generations
+Population
+0.0
+50.0
+0.0
+1200.0
+true
+true
+"set-plot-y-range 0 floor (carrying-capacity * 1.2)" ""
+PENS
+"Reds" 1.0 0 -2674135 true "" "set red-count count turtles with [ color = red ]\nplot red-count"
+"Blues" 1.0 0 -13345367 true "" "set blue-count count turtles with [ color = blue ]\nplot blue-count"
+"Total" 1.0 0 -10899396 true "" "plot count turtles"
+
+MONITOR
+67
+176
+143
+221
+# reds
+red-count
+3
+1
+11
+
+MONITOR
+145
+176
+222
+221
+# blues
+blue-count
+3
+1
+11
+
+OUTPUT
+290
+449
+602
+543
+12
 
 @#$#@#$#@
 ## WHAT IS IT?
 
-(a general understanding of what the model is trying to show or explain)
-
-## HOW IT WORKS
-
-(what rules the agents use to create the overall behavior of the model)
+This is a simple model of population genetics.  There are two populations, the REDS and the BLUES. Each has settable birth rates.  The reds and blues move around and reproduce according to their birth rates.  When the carrying capacity of the terrain is exceeded, some agents die (each agent has the same chance of being selected for death) to maintain a relatively constant population.  The model allows you to explore how differential birth rates affect the ratio of reds to blues.
 
 ## HOW TO USE IT
 
-(how to use the model, including a description of each of the items in the Interface tab)
+Each pass through the GO function represents a generation in the time scale of this model.
+
+The CARRYING-CAPACITY slider sets the carrying capacity of the terrain.  The model is initialized to have a total population of CARRYING-CAPACITY with half the population reds and half blues.
+
+The RED-FERTILITY and BLUE-FERTILITY sliders sets the average number of children the reds and blues have in a generation.  For example, a fertility of 3.4 means that each parent will have three children minimum, with a 40% chance of having a fourth child.
+
+The # BLUES and # REDS monitors display the number of reds and blues respectively.
+
+The GO button runs the model.  A running plot is also displayed of the number of reds, blues and total population (in green).
+
+The RUN-EXPERIMENT button lets you experiment with many trials at the same settings.  This button outputs the number of ticks it takes for either the reds or the blues to die out given a particular set of values for the sliders.  After each extinction occurs, the world is cleared and another run begins with the same settings.  This way you can see the variance of the number of generations until extinction.
 
 ## THINGS TO NOTICE
 
-(suggested things for the user to notice while running the model)
+How does differential birth rates affect the population dynamics?
+
+Does the population with a higher birth rate always start off growing faster?
+
+Does the population with a lower birth rate always end up extinct?
 
 ## THINGS TO TRY
 
-(suggested things for the user to try to do (move sliders, switches, etc.) with the model)
+Try running an experiment with the same settings many times.
+
+Does one population always go extinct? How does the number of generations until extinction vary?
 
 ## EXTENDING THE MODEL
 
-(suggested things to add or change in the Code tab to make the model more complicated, detailed, accurate, etc.)
+In this model, once the carrying capacity has been exceeded, every member of the population has an equal chance of dying. Try extending the model so that reds and blues have different saturation rates. How does the saturation rate compare with the birthrate in determining the population dynamics?
 
-## NETLOGO FEATURES
+In this model, the original population is set to the carrying capacity (both set to CARRYING-CAPACITY). Would population dynamics be different if these were allowed to vary independently?
 
-(interesting or unusual features of NetLogo that the model uses, particularly in the Code tab; or where workarounds were needed for missing features)
+In this model, reds are red and blues blue and progeny of reds are always red, progeny of blues are always blue. What if you allowed reds to sometimes have blue progeny and vice versa? How would the model dynamics be different?
 
-## RELATED MODELS
+## HOW TO CITE
 
-(models in the NetLogo Models Library and elsewhere which are of related interest)
+If you mention this model or the NetLogo software in a publication, we ask that you include the citations below.
 
-## CREDITS AND REFERENCES
+For the model itself:
 
-(a reference to the model's URL on the web if it has one, as well as any other necessary credits, citations, and links)
+* Wilensky, U. (1997).  NetLogo Simple Birth Rates model.  http://ccl.northwestern.edu/netlogo/models/SimpleBirthRates.  Center for Connected Learning and Computer-Based Modeling, Northwestern University, Evanston, IL.
+
+Please cite the NetLogo software as:
+
+* Wilensky, U. (1999). NetLogo. http://ccl.northwestern.edu/netlogo/. Center for Connected Learning and Computer-Based Modeling, Northwestern University, Evanston, IL.
+
+## COPYRIGHT AND LICENSE
+
+Copyright 1997 Uri Wilensky.
+
+![CC BY-NC-SA 3.0](http://ccl.northwestern.edu/images/creativecommons/byncsa.png)
+
+This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 3.0 License.  To view a copy of this license, visit https://creativecommons.org/licenses/by-nc-sa/3.0/ or send a letter to Creative Commons, 559 Nathan Abbott Way, Stanford, California 94305, USA.
+
+Commercial licenses are also available. To inquire about commercial licenses, please contact Uri Wilensky at uri@northwestern.edu.
+
+This model was created as part of the project: CONNECTED MATHEMATICS: MAKING SENSE OF COMPLEX PHENOMENA THROUGH BUILDING OBJECT-BASED PARALLEL MODELS (OBPML).  The project gratefully acknowledges the support of the National Science Foundation (Applications of Advanced Technologies Program) -- grant numbers RED #9552950 and REC #9632612.
+
+This model was converted to NetLogo as part of the projects: PARTICIPATORY SIMULATIONS: NETWORK-BASED DESIGN FOR SYSTEMS LEARNING IN CLASSROOMS and/or INTEGRATED SIMULATION AND MODELING ENVIRONMENT. The project gratefully acknowledges the support of the National Science Foundation (REPP & ROLE programs) -- grant numbers REC #9814682 and REC-0126227. Converted from StarLogoT to NetLogo, 2001.
+
+<!-- 1997 2001 -->
 @#$#@#$#@
 default
 true
@@ -357,22 +526,6 @@ Polygon -7500403 true true 135 105 90 60 45 45 75 105 135 135
 Polygon -7500403 true true 165 105 165 135 225 105 255 45 210 60
 Polygon -7500403 true true 135 90 120 45 150 15 180 45 165 90
 
-sheep
-false
-15
-Circle -1 true true 203 65 88
-Circle -1 true true 70 65 162
-Circle -1 true true 150 105 120
-Polygon -7500403 true false 218 120 240 165 255 165 278 120
-Circle -7500403 true false 214 72 67
-Rectangle -1 true true 164 223 179 298
-Polygon -1 true true 45 285 30 285 30 240 15 195 45 210
-Circle -1 true true 3 83 150
-Rectangle -1 true true 65 221 80 296
-Polygon -1 true true 195 285 210 285 210 240 240 210 195 210
-Polygon -7500403 true false 276 85 285 105 302 99 294 83
-Polygon -7500403 true false 219 85 210 105 193 99 201 83
-
 square
 false
 0
@@ -457,13 +610,6 @@ Line -7500403 true 40 84 269 221
 Line -7500403 true 40 216 269 79
 Line -7500403 true 84 40 221 269
 
-wolf
-false
-0
-Polygon -16777216 true false 253 133 245 131 245 133
-Polygon -7500403 true true 2 194 13 197 30 191 38 193 38 205 20 226 20 257 27 265 38 266 40 260 31 253 31 230 60 206 68 198 75 209 66 228 65 243 82 261 84 268 100 267 103 261 77 239 79 231 100 207 98 196 119 201 143 202 160 195 166 210 172 213 173 238 167 251 160 248 154 265 169 264 178 247 186 240 198 260 200 271 217 271 219 262 207 258 195 230 192 198 210 184 227 164 242 144 259 145 284 151 277 141 293 140 299 134 297 127 273 119 270 105
-Polygon -7500403 true true -1 195 14 180 36 166 40 153 53 140 82 131 134 133 159 126 188 115 227 108 236 102 238 98 268 86 269 92 281 87 269 103 269 113
-
 x
 false
 0
@@ -474,6 +620,21 @@ NetLogo 6.2.0
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
+<experiments>
+  <experiment name="Blue_fertility_effect_on_red_extinction" repetitions="100" runMetricsEveryStep="false">
+    <setup>setup</setup>
+    <go>go</go>
+    <exitCondition>red-count = 0</exitCondition>
+    <metric>ticks</metric>
+    <enumeratedValueSet variable="carrying-capacity">
+      <value value="1000"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="red-fertility">
+      <value value="2"/>
+    </enumeratedValueSet>
+    <steppedValueSet variable="blue-fertility" first="2.1" step="0.1" last="5"/>
+  </experiment>
+</experiments>
 @#$#@#$#@
 @#$#@#$#@
 default
@@ -487,5 +648,5 @@ true
 Line -7500403 true 150 150 90 180
 Line -7500403 true 150 150 210 180
 @#$#@#$#@
-0
+1
 @#$#@#$#@

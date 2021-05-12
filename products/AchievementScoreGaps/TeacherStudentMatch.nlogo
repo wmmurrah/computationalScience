@@ -1,133 +1,198 @@
-globals
-[
-  ;q    Moved to slider on the Interface
-      ; q is the probability that butterfly moves
-      ; directly to the highest surrounding patch
-]
+;Montes, G. (2011). Using artificial societies to understand the impact of teacher student match on
+;; academic performance: the case of same race effects
 
-patches-own
-[
-  elevation
-  used?
-]
+globals [nstudents matcheffect cuttoff differential counter]
+breed [teachers teacher]
+breed [students student]
+teachers-own [race distr]
+students-own [race distr achiev match rachiev nmatches]
 
-turtles-own [ start-patch ]
 
 to setup
+ clear-all
+ ask patches [set pcolor white]
+ set counter 0
 
-  ca
 
-  ; Assign an elevation to patches and color them by it
-  ; Now we read the elevations in from a file
-  file-open "ElevationData.txt"
-  while [ not file-at-end? ]
-  [
-    let next-X file-read
-    let next-Y file-read
-    let next-elevation file-read
-    ask patch next-X next-Y [ set elevation next-elevation ]
+
+ ; Blue is Black or minority group and yellow is White or majority group.
+ ; I use the normal distribution to set the groups to calibrated percentages.
+
+ set nstudents pupilsperclass * nteachers
+ create-ordered-students nstudents [set shape "person"
+                                    set color red
+                                    fd 16
+                                    set distr random-normal 0 1
+                                    set achiev 0
+                                    set rachiev 0
+                                    set nmatches 0
+                                    set match 0
+                                    ifelse distr <= -1.02365  [set race -1 set color blue][set race 1 set color yellow]]
+ create-ordered-teachers nteachers [set shape "house"
+                                    set color blue
+                                    fd 10
+                                    set distr random-normal 0 1
+                                    ifelse distr <= -1.46471  [set race -1 set color blue][set race 1 set color yellow]]
+ student-assignment
+ ask links  [ifelse [race] of end1 * [race] of end2 > 0
+                               [set color green
+                                set thickness 0.2
+                                ask end1 [set match 1
+                                          ;set nmatches nmatches + 1
+                                          ]]
+                               [set color red
+                                ask end1[set match 0] ]]
+ setup-graph
+end
+
+to student-assignment
+  let i nstudents
+  let j 0
+  let h 1
+  while [ i < nstudents + nteachers]
+     [ ask teacher i [create-link-with student j]
+       ifelse h < pupilsperclass [set h h + 1][set i i + 1 set h 1]
+       set j j + 1
+       ]
+end
+
+to go
+   ifelse counter > 12 [stop][
+   graph
+   academicprod  ;; procedure to increase academic production
+   normalize
+   gradechange   ;; procedure to change grade and get a new teacher
   ]
-  file-close
+end
 
-  let min-elevation min [elevation] of patches
-  let max-elevation max [elevation] of patches
+;; penalty simply substracts a percentage of the teacher effect
+to academicprod
+  ask students [set achiev achiev + teffect + match * tmatch + random-normal 0 1 ;error
+                set nmatches (nmatches + 1 * match)]
+  set counter counter + 1
+end
 
-  ask patches
-  [
-    set pcolor scale-color green elevation min-elevation max-elevation
-    set used? false
-  ] ; end of "ask patches"
+to gradechange
+ ask teachers [set distr random-normal 0 1]
+ teacher-race
+ det-match
+end
 
-  ; Create butterflies
-  crt 500
-  [
-    set size 2
+to teacher-race
+  ask teachers [ifelse distr <= -1.46471 [set race -1 set color blue][set race 1 set color yellow]]
+end
 
-; Set initial location to a random patch
-    setxy random-pxcor random-pycor
-    pen-down
-    set start-patch patch-here
-  ]
+;;end 1 is student
+;; end 2 is teacher
+;; if condition uses the fact that if races match product is positive and if they do not it is negative
+;; green colored link indicates match
 
-  ; Initialize the "q" parameter
-  ; set q 0.4  Moved to slider
+to det-match
+ ask teachers[ ask links  [
+             ifelse [race] of end1 * [race] of end2 > 0 [set color green
+                                                         set thickness 0.2
+                                                         ask end1[ set match 1
+                                                                   ;set nmatches nmatches + 1
+                                                                   ]]
+                                                         [set color red
+                                                          ask end1 [set match 0]]]]
 
-  reset-ticks
-
-end ; of setup procedure
-
-to go ; This is the master schedule
-
-  ask turtles [ move ]
-
-  plot corridor-width
-
-  tick
-  if ticks >= 1000
-  [
-    output-print (word "Corridor width: " corridor-width)
-    export-plot "Corridor width" (word "Corridor-output-for-q-" q ".csv")
-    stop
-  ]
 
 end
 
-to move  ; The butterfly move procedure, in turtle context
-         ; Decide whether to move to the highest
-         ; surrounding patch with probability q
+to normalize
+ ask students [
+    set rachiev (achiev - mean [achiev] of students)/ standard-deviation [achiev] of students
+     ]
+end
 
-  ifelse random-float 1.0 < q
-  [ uphill elevation ] ; Move deterministically uphill
-  [ move-to one-of neighbors ] ; Or move randomly
+;; Used code form the standard netlogo library to create charts
+to setup-graph
+  set-current-plot "Relative Achievement"
+  set-current-plot-pen "axis"
+  ;; we don't want the "auto-plot" feature to cause the
+  ;; plot's x range to grow when we draw the axis.  so
+  ;; first we turn auto-plot off temporarily
+  auto-plot-off
+  ;; now we draw an axis by drawing a line from the origin...
+  plotxy 0 0
+  ;; ...to a point that's way, way, way off to the right.
+  plotxy 1000000000 0
+  ;; now that we're done drawing the axis, we can turn
+  ;; auto-plot back on again
+  auto-plot-on
 
-  set used? true ; Record that the patch has been used by a butterfly
+  set-current-plot "Absolute Achievement"
+  set-current-plot-pen "axis"
+  ;; we don't want the "auto-plot" feature to cause the
+  ;; plot's x range to grow when we draw the axis.  so
+  ;; first we turn auto-plot off temporarily
+  auto-plot-off
+  ;; now we draw an axis by drawing a line from the origin...
+  plotxy 0 0
+  ;; ...to a point that's way, way, way off to the right.
+  plotxy 1000000000 0
+  ;; now that we're done drawing the axis, we can turn
+  ;; auto-plot back on again
+  auto-plot-on
 
-end ; of move procedure
 
-to-report corridor-width ; A global procedure to calculate the corridor-width output
+  set-current-plot "Relative Achievement by Number of Matches"
 
-  let num-patches-used count patches with [ used? ]
+end
 
-  let mean-distance-moved mean [distance start-patch] of turtles
+to graph
+  set-current-plot "Relative Achievement"
+  set-current-plot-pen "Minorities"
+  plot mean [rachiev] of students with  [color = blue]
+  set-current-plot-pen "Whites"
+  plot mean [rachiev] of students with  [color = yellow]
 
-  report num-patches-used / mean-distance-moved
+  set-current-plot "Absolute Achievement"
+  set-current-plot-pen "Minorities"
+  plot mean [achiev] of students with  [color = blue]
+  set-current-plot-pen "Whites"
+  plot mean [achiev] of students with  [color = yellow]
+
+  set-current-plot "Relative Achievement by Number of Matches"
+  ask students [plotxy nmatches rachiev]
 
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
 210
 10
-668
-469
+647
+448
 -1
 -1
-3.0
+13.0
 1
 10
 1
 1
 1
 0
-0
-0
 1
-0
-149
-0
-149
-0
-0
+1
+1
+-16
+16
+-16
+16
+1
+1
 1
 ticks
 30.0
 
 BUTTON
-16
-34
-79
-67
+23
+24
+89
+57
 NIL
-setup
+setup\n
 NIL
 1
 T
@@ -139,11 +204,28 @@ NIL
 1
 
 BUTTON
-87
-34
-150
-67
+23
+74
+86
+107
+step
+go
 NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+23
+125
+86
+158
+go
 go
 T
 1
@@ -156,33 +238,86 @@ NIL
 1
 
 SLIDER
-16
-73
-188
-106
-q
-q
+11
+195
+183
+228
+pupilsperclass
+pupilsperclass
 0
+100
+50.0
 1
-0.4
-.01
 1
 NIL
 HORIZONTAL
 
-OUTPUT
-11
-162
-190
-216
-11
+SLIDER
+9
+246
+181
+279
+nteachers
+nteachers
+0
+100
+50.0
+1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+7
+307
+179
+340
+teffect
+teffect
+0
+100
+50.0
+1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+6
+358
+178
+391
+tmatch
+tmatch
+0
+1
+0.5
+.1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+14
+419
+186
+452
+error
+error
+0
+100
+50.0
+1
+1
+NIL
+HORIZONTAL
 
 PLOT
-4
-265
-204
-415
-Corridor width
+711
+41
+911
+191
+Relative Achievement
 NIL
 NIL
 0.0
@@ -193,52 +328,82 @@ true
 false
 "" ""
 PENS
-"default" 1.0 0 -16777216 true "" ""
+"axis" 1.0 0 -16777216 true "" ""
+
+PLOT
+946
+46
+1146
+196
+Absolute Achievement
+NIL
+NIL
+0.0
+10.0
+0.0
+10.0
+true
+false
+"" ""
+PENS
+"Minorities" 1.0 0 -13345367 true "" ""
+"Whites" 1.0 0 -1184463 true "" ""
+
+PLOT
+712
+240
+912
+390
+Relative Achievement by number of Matches
+NIL
+NIL
+0.0
+10.0
+0.0
+10.0
+true
+false
+"" ""
+PENS
+"Minorities" 1.0 0 -13345367 true "" ""
+"Whites" 1.0 0 -1184463 true "" ""
 
 @#$#@#$#@
-# Butterfly Model ODD Description
-This file is provided as instructor materials for Chapter 5 of _Agent-based and Individual-based Modeling, 2nd edition_, by Railsback and Grimm (2019). Please do not copy or distribute this file. It is available upon request from www.railsback-grimm-abm-book.com.
+## WHAT IS IT?
 
-This file is copyrighted 2019 by Steven F. Railsback and Volker Grimm.
+(a general understanding of what the model is trying to show or explain)
 
-The file implements the Butterfly model as described in Section 5.5. 
+## HOW IT WORKS
 
+(what rules the agents use to create the overall behavior of the model)
 
-## 1. Purpose and patterns
-The model was designed to explore questions about virtual corridors. Under what conditions do the interactions of butterfly hilltopping behavior and landscape topography lead to the emergence of virtual corridors, that is, relatively narrow paths along which many butterflies move? How does variability in the butterflies’ tendency to move uphill affect the emergence of virtual corridors? This model does not represent a specific place or species of butterfly, so only general patterns are used as criteria for its usefulness for answering these questions: that butterflies can reach hilltops, and that their movement has a strong stochastic element representing the effects of factors other than elevation.
+## HOW TO USE IT
 
-## 2. Entities, State Variables, and Scales
-The model has two kinds of entities: butterflies and square patches of land. The patches make up a square grid landscape of 150 × 150 patches, and each patch has one state variable: its elevation. Butterflies are characterized only by their location, described as the patch they are on. Therefore, butterfly locations are in discrete units, the x- and y- coordinates of the center of their patch. Patch size and the length of one time step in the simulation are not specified because the model is generic, but when real landscapes are used, a patch corresponds to 25 × 25 m<sup>2</sup>. Simulations last for 1000 time steps; the length of one time step is not specified but should be about the time it takes a butterfly to move 25–35 m (the distance from one cell to one of its neighbor cells).
+(how to use the model, including a description of each of the items in the Interface tab)
 
-## 3. Process Overview and Scheduling
-There is only one process in the model: movement of the butterflies. On each time step, each butterfly moves once. The order in which the butterflies execute this action is unimportant because there are no interactions among the butterflies.
+## THINGS TO NOTICE
 
-## 4. Design Concepts
-The _basic principle_ addressed by this model is the concept of virtual corridors—pathways used by many individuals when there is nothing particularly beneficial about the habitat in them. This concept is addressed by seeing when corridors _emerge_ from two parts of the model: the adaptive movement behavior of butterflies and the landscape they move through. This _adaptive behavior_ is modeled via a simple empirical rule that reproduces the behavior observed in real butterflies: moving uphill. This behavior is based on the understanding (not included in the model) that moving uphill leads to mating, which conveys fitness (success at passing on genes, the presumed ultimate objective of organisms). Because the hilltopping behavior is assumed a priori to be the objective of the butterflies, the concepts of _Objectives_ and _Prediction_ are not explicitly considered. There is no _learning_ in the model.
+(suggested things for the user to notice while running the model)
 
-_Sensing_ is important in this model: butterflies are assumed able to identify which of the surrounding patches has the highest elevation, but to use no information about elevation at further distances. (The field studies of Pe’er 2003 addressed this question of how far butterflies sense elevation differences.)
+## THINGS TO TRY
 
-The model does not include _interaction_ among butterflies; in field studies, Pe’er (2003) found that real butterflies do interact (they sometimes stop to visit each other on the way uphill) but decided it is not important to include interaction in a model of virtual corridors.
+(suggested things for the user to try to do (move sliders, switches, etc.) with the model)
 
-_Stochasticity_ is used to represent two sources of variability in movement that are too complex to represent mechanistically. Real butterflies do not always move directly uphill, likely because of (1) limits in the ability of the butterflies to sense the highest area in their neighborhood, and (2) factors other than topography (e.g., flowers that need investigation along the way) that influence movement direction. This variability is represented by assuming butterflies do not move uphill every time step; sometimes they move randomly instead. Whether a butterfly moves directly uphill or randomly at any time step is modeled stochastically, using a parameter _q_ that is the probability of an individual moving directly uphillinstead of randomly.
+## EXTENDING THE MODEL
 
-To allow _observation_ of the two patterns used to define the model’s usefulness, we use graphical display of topography and butterfly locations. Observing virtual corridors requires a specific “corridor width” measure that characterizes the width of butterfly paths from their starting patches to hilltops.
+(suggested things to add or change in the Code tab to make the model more complicated, detailed, accurate, etc.)
 
-## 5. Initialization
-The topography of the landscape (the elevation of each patch) is initialized when the model starts. Two kinds of landscapes are used in different versions of the model: (1) a simple artificial topography, and (2) the topography of a real study site, imported from a file containing elevation values for each patch. The butterflies are initialized by creating five hundred of them and dispersing them throughout the landscape: each butterfly’s initial location is set to a patch selected randomly from among all patches.
+## NETLOGO FEATURES
 
-## 6. Input Data
-The environment is assumed to be constant, so the model has no input data.
+(interesting or unusual features of NetLogo that the model uses, particularly in the Code tab; or where workarounds were needed for missing features)
 
-## 7. Submodels
-The movement submodel defines exactly how butterflies decide whether to move uphill or randomly. First, to “move uphill” is defined specifically as moving to the neighbor patch that has the highest elevation; if two patches have the same elevation, one is chosen randomly. “Move randomly” is defined as moving to one of the neighboring patches, with equal probability of choosing any patch. “Neighbor patches” are the eight patches surrounding the butterfly’s current patch. The decision of whether to move uphill or randomly is controlled by the parameter _q_, which ranges from 0.0 to 1.0 (_q_ is a global variable: all butterflies use the same value). On each time step, each butterfly draws a random number from a uniform distribution between 0.0 and 1.0. If this random number is less than _q_, the butterfly moves uphill; otherwise, the butterfly moves randomly.
+## RELATED MODELS
+
+(models in the NetLogo Models Library and elsewhere which are of related interest)
 
 ## CREDITS AND REFERENCES
-Pe’er, G., Saltz, D. & Frank, K. 2005. Virtual corridors for conservation management. _Conservation Biology_, 19, 1997–2003.
 
-Pe’er, G. 2003. Spatial and behavioral determinants of butterfly movement patterns in topographically complex landscapes. Ph.D. thesis, Ben-Gurion University of the Negev.
-
-Railsback, S. & Grimm, V. 2018. _Agent-based and individual-based modeling: A practical introduction, Second edition_. Princeton University Press, Princeton, NJ.
+(a reference to the model's URL on the web if it has one, as well as any other necessary credits, citations, and links)
 @#$#@#$#@
 default
 true
