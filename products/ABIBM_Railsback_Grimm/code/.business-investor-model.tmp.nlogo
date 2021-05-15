@@ -119,7 +119,7 @@ to update-outputs
   plot mean [wealth] of turtles
   set-current-plot "Mean Profit"
   plot mean [profit] of turtles
-  set-current-plot "Mean Risk"
+
   plot mean [risk] of turtles
 end
 
