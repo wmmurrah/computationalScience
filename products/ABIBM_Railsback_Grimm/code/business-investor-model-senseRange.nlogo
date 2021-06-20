@@ -58,25 +58,30 @@ end; setup
 
 to go
    tick
-  if (ticks >= years-simulated)[
-    stop
-  ]
+  if (ticks >= years-simulated)[stop]
+
   ask turtles [
     reposition-investor
     update-wealth
   ]
   update-outputs
-  write-to-test-file
+  ;write-to-test-file
 
 end; go
 
 ;;;;;;;;;;;;;;;;;;;;;; Procedures ;;;;;;;;;;;;;;;;;;;;;
 to reposition-investor
-  let potential-destinations (patch-set patch-here neighbors
-    with [not any? turtles-here])
-  let this-patch patch-here
-  set potential-destinations potential-destinations with
-    [self != this-patch]
+  ; First identify potential neighbor destination patches
+  let potential-destinations patches in-radius
+  sensing-radius with [not any? turtles-here]
+  ; Next add current patch to the potential destinations
+  set potential-destinations
+     (patch-set potential-destinations patch-here)
+  ;let potential-destinations (patch-set patch-here neighbors
+   ; with [not any? turtles-here])
+  ;let this-patch patch-here
+  ;set potential-destinations potential-destinations with
+  ;  [self != this-patch]
   let best-patch max-one-of potential-destinations
     [utility-for myself]
   ;set turtle-utility [utility-for myself] of best-patch
@@ -128,38 +133,38 @@ end
 ;;;;;;;;;;;;;; Testing ;;;;;;;;;;;;;;;;;
 
 ; Open an output file for testing model
-to initialize-test-file
-  if (file-exists? "../data/Investor-model-test.csv")
-    [
-      carefully
-        [file-delete "../data/Investor-model-test.csv"]
-      [print error-message]
-    ]
-
-  file-open "../data/Investor-model-test.csv"
-  file-type "id,"
-  file-type "tick,"
-  file-type "decision-time-horizon,"
-  file-type "wealth,"
-  file-type "profit,"
-  file-type "risk,"
-  file-print "turtle-utility"
-  file-close
-end
-
-to write-to-test-file
-  file-open "../data/Investor-model-test.csv"
-  ask turtles [
-    file-type (word who ",")
-    file-type (word ticks ",")
-    file-type (word decision-time-horizon ",")
-    file-type (word wealth ",")
-    file-type (word profit ",")
-    file-type (word risk ",")
-    file-print turtle-utility
-  ]
-  file-close
-end
+;to initialize-test-file
+;  if (file-exists? "../data/Investor-model-test.csv")
+;    [
+;      carefully
+;        [file-delete "../data/Investor-model-test.csv"]
+;      [print error-message]
+;    ]
+;
+;  file-open "../data/Investor-model-test.csv"
+;  file-type "id,"
+;  file-type "tick,"
+;  file-type "decision-time-horizon,"
+;  file-type "wealth,"
+;  file-type "profit,"
+;  file-type "risk,"
+;  file-print "turtle-utility"
+;  file-close
+;end
+;
+;to write-to-test-file
+;  file-open "../data/Investor-model-test.csv"
+;  ask turtles [
+;    file-type (word who ",")
+;    file-type (word ticks ",")
+;    file-type (word decision-time-horizon ",")
+;    file-type (word wealth ",")
+;    file-type (word profit ",")
+;    file-type (word risk ",")
+;    file-print turtle-utility
+;  ]
+;  file-close
+;end
 @#$#@#$#@
 GRAPHICS-WINDOW
 210
@@ -397,6 +402,21 @@ false
 "" ""
 PENS
 "default" 1.0 0 -16777216 true "" ""
+
+SLIDER
+34
+185
+206
+218
+sensing-radius
+sensing-radius
+0
+10
+1.0
+.1
+1
+NIL
+HORIZONTAL
 
 @#$#@#$#@
 ## WHAT IS IT?
